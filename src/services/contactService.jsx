@@ -2,7 +2,7 @@ import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 
 export const getContacts = async () => {
-    const {status} = await Contacts.requestPermissionsAsync();
+    const {status} = await Permissions.getPermission(Permissions.CONTACTS);
     if (status === 'granted') {
         const {data} = await Contacts.getContactsAsync({
             fields: [
@@ -11,7 +11,6 @@ export const getContacts = async () => {
         });
         if (data.length > 0) {
             const contact = data[0];
-            console.log(data);
             return contact;
         } 
     };
