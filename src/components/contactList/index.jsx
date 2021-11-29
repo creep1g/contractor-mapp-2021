@@ -23,14 +23,17 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 			numColumns={1}
 			data={sortedContacts}
 			renderItem={ ({ item }) => (
-				<TouchableOpacity style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
-						<View style={ style.contact } >
+				<TouchableOpacity 
+					onLongPress={() => onLongPress(item.id)} 
+					style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
+					<View style={[ style.contact, { backgroundColor: isSelected(item.id) ? 'lightblue' : 'lightgrey' } ]} >
 							<Image 
 								style={ style.image }
 								source={{ uri: item.image }}
 								resizeMode={ 'cover' } />
 							<Text style={ style.name }> { item.name } </Text>
 						</View>
+
 					</TouchableOpacity>
 			
 		
