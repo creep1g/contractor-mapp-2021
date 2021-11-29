@@ -55,8 +55,8 @@ const ContactList = () => {
 			numColumns={1}
 			data={sortedContacts}
 			renderItem={ ({ item }) => (
-				<View key={item.id}>
-					<TouchableOpacity key={item.id} style={ style.contact }> 
+				<View>
+					<TouchableOpacity style={ style.contact }> 
 						<Image 
 							style={ style.image }
 							source={{ uri: item.image }}
@@ -69,7 +69,7 @@ const ContactList = () => {
 			)
 		}
 
-			keyExtractor={(item) => { item.id }}
+			keyExtractor={(item) => item.id }
 		/>
 	)
 };
