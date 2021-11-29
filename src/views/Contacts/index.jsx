@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import ContactList from '../../components/contactList';
 import data from '../../data/data.json';
+import Toolbar from '../../components/toolbar';
 import contactService from '../../services/contactService';
 import * as Contact from 'expo-contacts';
 
 const Contacts = function( {navigation: { navigate }} ) {
+
 	const [ contacts, setContacts ] = useState(data.contacts);
 
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
@@ -44,20 +46,27 @@ const Contacts = function( {navigation: { navigate }} ) {
 	  }, []);
 
 	const onContactLongPress = (id) => {
+		console.log({ id });
     if (selectedContacts.indexOf(id) !== -1) {
       setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
-    } else {
+    }
+		else {
       setSelectedContacts([...selectedContacts, id]);
     }
   };
 	return(
 		<View style={{flex:1}}>
-			<ContactList 
-				onLongPress={(id) => onContactLongPress(id)}
-				selectedContacts={selectedContacts}
-				contacts={contacts}
-			/>
-		</View>)
+			<Toolbar />
+			<View style={{flex:1}}>
+				<ContactList 
+					onLongPress={(id) => onContactLongPress(id)}
+					selectedContacts={selectedContacts}
+					contacts={contacts}
+				/>
+			</View>
+		</View>
+	)
+
 };
 
 export default Contacts;
