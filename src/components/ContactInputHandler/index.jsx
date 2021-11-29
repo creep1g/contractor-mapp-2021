@@ -3,8 +3,10 @@ import {
   Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView,
 } from 'react-native';
 import styles from './styles';
+import * as imageService from '../../services/imageService';
+import { addImage } from '../../services/fileService';
 
-const ContactInputHandler = function ({addContact, takePhoto, selectPhoto, closeModal}) {
+const ContactInputHandler = function ({addContact, selectPhoto, closeModal}) {
   const [inputs, setInputs] = useState({
     name: '',
     number: '',
@@ -17,6 +19,21 @@ const ContactInputHandler = function ({addContact, takePhoto, selectPhoto, close
       [name]:value,
     });
   };
+
+  const takePhoto = async () => {
+	  const photo = await imageService.takePhoto();
+	  console.log(photo);
+    inputHandler('image', photo);
+	  if (photo.length > 0) {await addImage(photo)}
+    
+  }
+
+  const selectFromCameraRoll = async () => {
+    const photo = await imageService.selectFromCameraRoll();
+    console.log(photo);
+    inputHandler('image', photo);
+	  if (photo.length > 0) {await addImage(photo)}
+  }
 
   return (
     <KeyboardAvoidingView>
@@ -40,13 +57,13 @@ const ContactInputHandler = function ({addContact, takePhoto, selectPhoto, close
       <Text style={styles.inputText}>Photo</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={takePhoto}
+          onPress={() => takePhoto()}
           style={styles.shadow, styles.button}
         >
           <Text style={styles.text}>Take photo</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={selectPhoto}
+          onPress={() => selectFromCameraRoll()}
           style={styles.shadow, styles.button}
         >
           <Text style={styles.text}>From cameraroll</Text>

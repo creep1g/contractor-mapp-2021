@@ -6,7 +6,8 @@ import Toolbar from '../../components/toolbar';
 import * as Contact from 'expo-contacts';
 import AddModal from '../../components/AddModal';
 import { addImage } from '../../services/fileService';
-import imageService from '../../services/imageService';
+import * as imageService from '../../services/imageService';
+import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
@@ -57,13 +58,15 @@ const Contacts = function( {navigation: { navigate }} ) {
   };
 
   const addContact = (input) => {
-	console.log(input);
+	const newContact = {
+		id: contacts.length + 1,
+		name: input.name,
+		image: input.image,
+	};
+	setContacts([...contacts, newContact]);
+	// fileService.addContact(newContact);
+	setIsAddModalOpen(false);
   };
-
-  const takePhoto = async () => {
-	  const photo = await imageService.takePhoto();
-	  if (photo.length > 0) {await addImage(photo)}
-  }
 
 	return(
 		<View style={{flex:1}}>
@@ -80,7 +83,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 				isOpen={isAddModalOpen}
 				closeModal={() => setIsAddModalOpen(false)}
 				addContact={(input) => addContact(input)}
-				takePhoto={() => takePhoto()}
 				selectFromCameraRoll={() => selectFromCameraRoll()}
 			/>
 		</View>
