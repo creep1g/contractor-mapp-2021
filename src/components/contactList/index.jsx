@@ -41,21 +41,7 @@ const ContactList = () => {
 
 	const sortedContacts = contacts.sort((first, second) => {
 		return first.name > second.name ? 1 : -1;
-			})
-		//.map((contact, i) => {
-		//		return (
-		//			<View key={i}>
-		//				<Image 
-		//					style={style.image}
-		//					source={{ uri: contact.image }}
-		//					resizeMode={'cover'} />
-		//
-		//				<Text> { contact.name }</Text>
-
-		//		</View>
-		//		)
-//		}
-//);
+			});
 
 	return ( 
 		<FlatList
