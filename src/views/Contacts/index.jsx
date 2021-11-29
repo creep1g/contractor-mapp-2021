@@ -3,14 +3,18 @@ import { View } from 'react-native';
 import ContactList from '../../components/contactList';
 import data from '../../data/data.json';
 import Toolbar from '../../components/toolbar';
-import contactService from '../../services/contactService';
 import * as Contact from 'expo-contacts';
+import AddModal from '../../components/AddModal';
+import { addImage } from '../../services/fileService';
+import imageService from '../../services/imageService';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
 	const [ contacts, setContacts ] = useState(data.contacts);
 
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
+
+	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 
 	useEffect(() => {
 		(async () => {
@@ -25,8 +29,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 	
 			if (data.length > 0) {
 				for (var i = 0; i < data.length; i++) {
-					//console.log(data);
-					//const phoneNumber = data.phoneNumbers.number;
 					const contact = {
 						"id": contacts.length + 1,
 						"name": data[i].name,
@@ -36,10 +38,9 @@ const Contacts = function( {navigation: { navigate }} ) {
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
-					console.log(contact);
 					setContacts([...contacts, contact])
 				}
-				console.log(contacts);
+				//console.log(contacts);
 			}
 		  }
 		})();
@@ -54,9 +55,20 @@ const Contacts = function( {navigation: { navigate }} ) {
       setSelectedContacts([...selectedContacts, id]);
     }
   };
+
+  const addContact = (input) => {
+	console.log(input);
+  };
+
+  const takePhoto = async () => {
+	  const photo = await imageService.takePhoto();
+	  if (photo.length > 0) {await addImage(photo)}
+  }
+
 	return(
 		<View style={{flex:1}}>
-			<Toolbar />
+			<Toolbar 
+				onAdd={() => setIsAddModalOpen(true)}/>
 			<View style={{flex:1}}>
 				<ContactList 
 					onLongPress={(id) => onContactLongPress(id)}
@@ -64,6 +76,13 @@ const Contacts = function( {navigation: { navigate }} ) {
 					contacts={contacts}
 				/>
 			</View>
+			<AddModal
+				isOpen={isAddModalOpen}
+				closeModal={() => setIsAddModalOpen(false)}
+				addContact={(input) => addContact(input)}
+				takePhoto={() => takePhoto()}
+				selectFromCameraRoll={() => selectFromCameraRoll()}
+			/>
 		</View>
 	)
 
