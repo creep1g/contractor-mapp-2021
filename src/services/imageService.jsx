@@ -33,7 +33,9 @@ export const takePhoto = async () => {
         base64: true,
         aspect: [16, 9]
     });
+    console.log(result);
 
     if (result.cancelled) {return ''; }
-    return result.uri;
+    if (result.cancelled === false) { return result.uri; }
+    if (!result.cancelled) { return result.uri; }
 }
