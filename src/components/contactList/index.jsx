@@ -18,6 +18,12 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 		return first.name > second.name ? 1 : -1;
 			});
 
+	const hasImage = (image) => {
+		if (image.length > 0) {
+			return true;
+		} 
+	};
+
 	return ( 
 		<FlatList
 			numColumns={1}
@@ -27,10 +33,20 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 					onLongPress={() => onLongPress(item.id)} 
 					style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
 					<View style={[ style.contact, { backgroundColor: isSelected(item.id) ? 'lightblue' : 'lightgrey' } ]} >
+
+						<Text>{ item.name[0] }</Text>
+
+						{
+							hasImage(item.image)
+								?
 							<Image 
 								style={ style.image }
 								source={{ uri: item.image }}
 								resizeMode={ 'cover' } />
+								:
+								<></>
+						}
+
 							<Text style={ style.name }> { item.name } </Text>
 						</View>
 

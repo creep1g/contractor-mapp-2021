@@ -9,7 +9,7 @@ const Routes = function () {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Contacts">
-        <Stack.Screen name="Contacts" component={Contacts} />
+				<Stack.Screen options={{ headerStatusBarHeight: 22, headerStyle: { backgroundColor: '#393E42' }, headerTintColor:'#fff'}}  name="Contacts" component={Contacts} />
       </Stack.Navigator>
     </NavigationContainer>
   );
