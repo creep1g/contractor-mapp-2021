@@ -25,9 +25,13 @@ const Contacts = function( {navigation: { navigate }} ) {
 			  fields: [
 				Contact.Fields.Name,
 				Contact.Fields.Image,
-				Contact.Fields.PhoneNumbers],
+				Contact.Fields.PhoneNumbers,]
 			});
-	
+			//console.log(data)
+			const bla = await fileService.getAllContacts();
+			for (var i = 0; i < bla.length; i++) {
+				console.log(bla[i]);
+			}
 			if (data.length > 0) {
 				for (var i = 0; i < data.length; i++) {
 					const contact = {
@@ -70,8 +74,8 @@ const Contacts = function( {navigation: { navigate }} ) {
 	newContact.location = await fileService.addContact(newContact);
 	//console.log(newContact);
 	setIsAddModalOpen(false);
-	const bla = await fileService.loadContact(newContact.location);
-	console.log(JSON.parse(bla));
+	//const bla = await fileService.loadContact(newContact.location);
+	//console.log(JSON.parse(bla));
   };
 
   const test = () => {
