@@ -5,24 +5,34 @@ import data from '../../data/data.json';
 import styles from './styles';
 
 
-const Search = () => {
+const Search = ( { masterDataSource, filteredDataSource, setFilteredDataSource } ) => {
 
-	const [ search, setSearch ] = useState('');
-	const [ filteredDataSource, setFilteredDataSource ] = useState([]);
-	const [ masterDataSource, setMasterDataSource ] = useState(data.contacts);
+  const [ search, setSearch ] = useState('');
+	
+	console.log(filteredDataSource);
 
-	useEffect( () => {
-		fetch('https://jsonplaceholder.typicode.com/posts')
-			.then((response) => response.json())
-			.then((responseJson) => {
-				setFilteredDataSource(responseJson);
-				setMasterDataSource(responseJson);
-			})
-			.catch((error) => { 
-				console.error(error);
-			});
-
-	}, []);
+	const searchFilterFunction = ( text ) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource
+      // Update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = item.name
+          ? item.name.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+		setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+		setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+	};
 
 
   const ItemView = ({ item }) => {
@@ -37,33 +47,12 @@ const Search = () => {
   };
 
 
-	const searchFilterFunction = ( text ) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-	};
 	return (
 		<SafeAreaView style={{flex:1}}>
-			<View style={{flex:1}}>
+			<View>
 				<SearchBar
 					round
+					border
 					// backgroundColor={"#444444"}
 					style={ styles.searchBar }
 					searchIcon={{ size: 24 }}
