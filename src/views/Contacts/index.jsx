@@ -16,7 +16,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
-
+	
 	useEffect(() => {
 		(async () => {
 		  const { status } = await Contact.requestPermissionsAsync();
@@ -25,24 +25,36 @@ const Contacts = function( {navigation: { navigate }} ) {
 			  fields: [
 				Contact.Fields.Name,
 				Contact.Fields.Image,
-				Contact.Fields.PhoneNumbers],
+				Contact.Fields.PhoneNumbers
+			  ]
 			});
-	
 			if (data.length > 0) {
+				let currentHighId = contacts.reduce(function(prev, current){ 
+							if (current.id > prev.id){
+								return current.id;
+							}
+							else {
+								return prev;
+							}
+						});
+
+				let all = [];
 				for (var i = 0; i < data.length; i++) {
+					let newId = currentHighId + 1 + all.length;
 					const contact = {
-						"id": contacts.length + 1,
+						// Needs to be fixed so id's don't get mixed up! 
+						"id": newId,
 						"name": data[i].name,
 						"image": '',
-						//"number": data[i].phoneNumbers[0].number,
-						"location": '',
+						"number": data[i].phoneNumbers[0].number,
+						"location": ''
 					}
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
-					setContacts([...contacts, contact])
+					all.push(contact);
 				}
-				//console.log(contacts);
+				setContacts([...contacts, ...all])
 			}
 		  }
 		})();
@@ -103,4 +115,3 @@ const Contacts = function( {navigation: { navigate }} ) {
 };
 
 export default Contacts;
-
