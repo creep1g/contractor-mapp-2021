@@ -1,5 +1,8 @@
 import * as FileSystem from 'expo-file-system';
+import uuid from 'react-native-uuid';
 const imageDirectory = `${FileSystem.documentDirectory}images`;
+const contactDirectory = `${FileSystem.documentDirectory}contacts`;
+
 
 const onException = (cb, errorHandler) => {
     try {
@@ -35,6 +38,14 @@ export const addImage = async imageLocation => {
     };
 }
 
+export const addContact = async newContact => {
+    var uid = uuid.v1();
+    console.log(`${contactDirectory}/${newContact.name}-${uid}.json`);
+    await setupDirectory(contactDirectory);
+    await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.name}-${uid}.json`, JSON.stringify(newContact)));
+    return `${contactDirectory}/${newContact.name}-${uid}.json`;
+}
+
 export const remove = async name => {
     return await onException(() => FileSystem.deleteAsync(`${imageDirectory}/${name}`, {idempotent: true}));
 }
@@ -45,16 +56,30 @@ export const loadImage = async fileName => {
     }));
 }
 
-export const setupDirectory = async () => {
-    const dir = await FileSystem.getInfoAsync(imageDirectory);
+export const loadContact = async location => {
+    return await onException(() => FileSystem.readAsStringAsync(location), {
+        encoding: FileSystem.EncodingType.UTF8
+    });
+}
+
+export const setupDirectory = async (directoryName) => {
+    const dir = await FileSystem.getInfoAsync(directoryName);
     if (!dir.exists) {
-        await FileSystem.makeDirectoryAsync(imageDirectory);
+        await FileSystem.makeDirectoryAsync(directoryName);
     }
+}
+
+export const getAllContacts = async () => {
+    await setupDirectory(contactDirectory)
+    const result = await onException(() => FileSystem.readDirectoryAsync(contactDirectory));
+    return Promise.all(result.map(async contact => {
+        console.log(contact);
+    }));
 }
 
 export const getAllImages = async () => {
     // Check if directory exists
-    await setupDirectory();
+    await setupDirectory(imageDirectory);
 
     const result = await onException(() => FileSystem.readDirectoryAsync(imageDirectory));
     return Promise.all(result.map(async fileName => {

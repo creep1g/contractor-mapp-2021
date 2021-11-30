@@ -29,7 +29,7 @@ const Toolbar = function ({
       </TouchableHighlight>
       <TouchableHighlight
         style={styles.toolbarAction}
-        disabled={hasSelected !== 1}
+        //disabled={hasSelected !== 1}
         onPress={onModify}
       >
         <Text

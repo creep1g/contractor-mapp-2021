@@ -6,7 +6,8 @@ import Toolbar from '../../components/toolbar';
 import * as Contact from 'expo-contacts';
 import AddModal from '../../components/AddModal';
 import { addImage } from '../../services/fileService';
-import imageService from '../../services/imageService';
+import * as imageService from '../../services/imageService';
+import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
@@ -34,6 +35,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 						"name": data[i].name,
 						"image": '',
 						//"number": data[i].phoneNumbers[0].number,
+						"location": '',
 					}
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
@@ -56,19 +58,33 @@ const Contacts = function( {navigation: { navigate }} ) {
     }
   };
 
-  const addContact = (input) => {
-	console.log(input);
+  const addContact = async (input) => {
+	const newContact = {
+		id: contacts.length + 1,
+		name: input.name,
+		image: input.image,
+		number: input.number,
+		location: '',
+	};
+	setContacts([...contacts, newContact]);
+	newContact.location = await fileService.addContact(newContact);
+	//console.log(newContact);
+	setIsAddModalOpen(false);
+	const bla = await fileService.loadContact(newContact.location);
+	console.log(JSON.parse(bla));
   };
 
-  const takePhoto = async () => {
-	  const photo = await imageService.takePhoto();
-	  if (photo.length > 0) {await addImage(photo)}
-  }
+  const test = () => {
+	const ppl = fileService.getAllContacts();
+	console.log(ppl);
+  };
 
 	return(
 		<View style={{flex:1}}>
 			<Toolbar 
-				onAdd={() => setIsAddModalOpen(true)}/>
+				onAdd={() => setIsAddModalOpen(true)}
+				onModify={() => test()}
+			/>
 			<View style={{flex:1}}>
 				<ContactList 
 					onLongPress={(id) => onContactLongPress(id)}
@@ -80,7 +96,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 				isOpen={isAddModalOpen}
 				closeModal={() => setIsAddModalOpen(false)}
 				addContact={(input) => addContact(input)}
-				takePhoto={() => takePhoto()}
 				selectFromCameraRoll={() => selectFromCameraRoll()}
 			/>
 		</View>
