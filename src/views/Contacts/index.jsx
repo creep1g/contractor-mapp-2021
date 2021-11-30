@@ -51,12 +51,14 @@ const Contacts = function( {navigation: { navigate }} ) {
 						"number": data[i].phoneNumbers[0].number,
 						"location": ''
 					}
+					
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
 					all.push(contact);
 				}
 				setContacts([...contacts, ...all])
+				setFilteredContacts([...filteredContacts, ...all])
 			}
 		  }
 		})();
@@ -81,16 +83,17 @@ const Contacts = function( {navigation: { navigate }} ) {
 		location: '',
 	};
 	setContacts([...contacts, newContact]);
+	setFilteredContacts([...filteredContacts, newContact]);
 	newContact.location = await fileService.addContact(newContact);
 	//console.log(newContact);
 	setIsAddModalOpen(false);
 	const bla = await fileService.loadContact(newContact.location);
-	console.log(JSON.parse(bla));
+	// console.log(JSON.parse(bla));
   };
 
   const test = () => {
 	const ppl = fileService.getAllContacts();
-	console.log(ppl);
+		console.log(ppl);
   };
 
 	return(
