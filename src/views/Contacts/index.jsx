@@ -49,7 +49,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 	  }, []);
 
 	const onContactLongPress = (id) => {
-		console.log({ id });
     if (selectedContacts.indexOf(id) !== -1) {
       setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
     }
