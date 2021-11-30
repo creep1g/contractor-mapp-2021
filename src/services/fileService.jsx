@@ -40,9 +40,10 @@ export const addImage = async imageLocation => {
 
 export const addContact = async newContact => {
     var uid = uuid.v1();
-    console.log(newContact);
+    console.log(`${contactDirectory}/${newContact.name}-${uid}.json`);
     await setupDirectory(contactDirectory);
-    await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.name}-${uid}/.json`, JSON.stringify(newContact)));
+    await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.name}-${uid}.json`, JSON.stringify(newContact)));
+    return `${contactDirectory}/${newContact.name}-${uid}.json`;
 }
 
 export const remove = async name => {
@@ -55,11 +56,25 @@ export const loadImage = async fileName => {
     }));
 }
 
+export const loadContact = async location => {
+    return await onException(() => FileSystem.readAsStringAsync(location), {
+        encoding: FileSystem.EncodingType.UTF8
+    });
+}
+
 export const setupDirectory = async (directoryName) => {
     const dir = await FileSystem.getInfoAsync(directoryName);
     if (!dir.exists) {
         await FileSystem.makeDirectoryAsync(directoryName);
     }
+}
+
+export const getAllContacts = async () => {
+    await setupDirectory(contactDirectory)
+    const result = await onException(() => FileSystem.readDirectoryAsync(contactDirectory));
+    return Promise.all(result.map(async contact => {
+        console.log(contact);
+    }));
 }
 
 export const getAllImages = async () => {

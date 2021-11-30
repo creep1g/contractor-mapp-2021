@@ -35,6 +35,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 						"name": data[i].name,
 						"image": '',
 						//"number": data[i].phoneNumbers[0].number,
+						"location": '',
 					}
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
@@ -57,21 +58,33 @@ const Contacts = function( {navigation: { navigate }} ) {
     }
   };
 
-  const addContact = (input) => {
+  const addContact = async (input) => {
 	const newContact = {
 		id: contacts.length + 1,
 		name: input.name,
 		image: input.image,
+		number: input.number,
+		location: '',
 	};
 	setContacts([...contacts, newContact]);
-	// fileService.addContact(newContact);
+	newContact.location = await fileService.addContact(newContact);
+	//console.log(newContact);
 	setIsAddModalOpen(false);
+	const bla = await fileService.loadContact(newContact.location);
+	console.log(JSON.parse(bla));
+  };
+
+  const test = () => {
+	const ppl = fileService.getAllContacts();
+	console.log(ppl);
   };
 
 	return(
 		<View style={{flex:1}}>
 			<Toolbar 
-				onAdd={() => setIsAddModalOpen(true)}/>
+				onAdd={() => setIsAddModalOpen(true)}
+				onModify={() => test()}
+			/>
 			<View style={{flex:1}}>
 				<ContactList 
 					onLongPress={(id) => onContactLongPress(id)}
