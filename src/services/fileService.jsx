@@ -3,7 +3,6 @@ import uuid from 'react-native-uuid';
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
-
 const onException = (cb, errorHandler) => {
     try {
         return cb();
@@ -56,8 +55,8 @@ export const loadImage = async fileName => {
     }));
 }
 
-export const loadContact = async location => {
-    return await onException(() => FileSystem.readAsStringAsync(location), {
+export const loadContact = async fileName => {
+    return await onException(() => FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`), {
         encoding: FileSystem.EncodingType.UTF8
     });
 }
@@ -73,7 +72,11 @@ export const getAllContacts = async () => {
     await setupDirectory(contactDirectory)
     const result = await onException(() => FileSystem.readDirectoryAsync(contactDirectory));
     return Promise.all(result.map(async contact => {
-        console.log(contact);
+        return {
+            name: contact,
+            type: 'string',
+            file: await loadContact(contact)
+        }
     }));
 }
 

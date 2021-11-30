@@ -11,14 +11,26 @@ import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
+	const loadAllContacts = async () => {
+		const contactObjects = await fileService.getAllContacts();
+		const contactList = contactObjects.map(contact => {
+			const con = JSON.parse(contact.file);
+			return con;
+		});
+		console.log(contactList);
+		return contactList;
+	}
+
 	const [ contacts, setContacts ] = useState(data.contacts);
 
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
-
+	
 	useEffect(() => {
 		(async () => {
+		  const contactList = await loadAllContacts();
+		  setContacts([...contacts, ...contactList]);
 		  const { status } = await Contact.requestPermissionsAsync();
 		  if (status === 'granted') {
 			const { data } = await Contact.getContactsAsync({
@@ -30,23 +42,35 @@ const Contacts = function( {navigation: { navigate }} ) {
 			//console.log(data)
 			const bla = await fileService.getAllContacts();
 			for (var i = 0; i < bla.length; i++) {
-				console.log(bla[i]);
+				console.log(JSON.parse(bla[i].file));
 			}
 			if (data.length > 0) {
+				let currentHighId = contacts.reduce(function(prev, current){ 
+							if (current.id > prev.id){
+								return current.id;
+							}
+							else {
+								return prev;
+							}
+						});
+
+				let all = [];
 				for (var i = 0; i < data.length; i++) {
+					let newId = currentHighId + 1 + all.length;
 					const contact = {
-						"id": contacts.length + 1,
+						// Needs to be fixed so id's don't get mixed up! 
+						"id": newId,
 						"name": data[i].name,
 						"image": '',
-						//"number": data[i].phoneNumbers[0].number,
-						"location": '',
+						"number": data[i].phoneNumbers[0].number,
+						"location": ''
 					}
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
-					setContacts([...contacts, contact])
+					all.push(contact);
 				}
-				//console.log(contacts);
+				setContacts([...contacts, ...all])
 			}
 		  }
 		})();
@@ -77,8 +101,8 @@ const Contacts = function( {navigation: { navigate }} ) {
 	//console.log(JSON.parse(bla));
   };
 
-  const test = () => {
-	const ppl = fileService.getAllContacts();
+  const test = async () => {
+	const ppl = await fileService.getAllContacts();
 	console.log(ppl);
   };
 
@@ -86,7 +110,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 		<View style={{flex:1}}>
 			<Toolbar 
 				onAdd={() => setIsAddModalOpen(true)}
-				onModify={() => test()}
+				onModify={() => loadAllContacts()}
 			/>
 			<View style={{flex:1}}>
 				<ContactList 
@@ -107,4 +131,3 @@ const Contacts = function( {navigation: { navigate }} ) {
 };
 
 export default Contacts;
-
