@@ -51,6 +51,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 						"number": data[i].phoneNumbers[0].number,
 						"location": ''
 					}
+					
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
@@ -82,6 +83,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 		location: '',
 	};
 	setContacts([...contacts, newContact]);
+	setFilteredContacts([...filteredContacts, newContact]);
 	newContact.location = await fileService.addContact(newContact);
 	//console.log(newContact);
 	setIsAddModalOpen(false);
@@ -91,7 +93,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 
   const test = () => {
 	const ppl = fileService.getAllContacts();
-	// console.log(ppl);
+		console.log(ppl);
   };
 
 	return(

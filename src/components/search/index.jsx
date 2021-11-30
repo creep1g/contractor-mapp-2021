@@ -9,8 +9,6 @@ const Search = ( { masterDataSource, filteredDataSource, setFilteredDataSource }
 
   const [ search, setSearch ] = useState('');
 	
-	console.log(filteredDataSource);
-
 	const searchFilterFunction = ( text ) => {
     // Check if searched text is not blank
     if (text) {
