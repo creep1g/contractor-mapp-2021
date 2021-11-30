@@ -57,6 +57,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 					all.push(contact);
 				}
 				setContacts([...contacts, ...all])
+				setFilteredContacts([...filteredContacts, ...all])
 			}
 		  }
 		})();
@@ -85,12 +86,12 @@ const Contacts = function( {navigation: { navigate }} ) {
 	//console.log(newContact);
 	setIsAddModalOpen(false);
 	const bla = await fileService.loadContact(newContact.location);
-	console.log(JSON.parse(bla));
+	// console.log(JSON.parse(bla));
   };
 
   const test = () => {
 	const ppl = fileService.getAllContacts();
-	console.log(ppl);
+	// console.log(ppl);
   };
 
 	return(
