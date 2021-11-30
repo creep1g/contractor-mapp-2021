@@ -13,6 +13,8 @@ const Contacts = function( {navigation: { navigate }} ) {
 
 	const [ contacts, setContacts ] = useState(data.contacts);
 
+	const [filteredContacts, setFilteredContacts] = useState(data.contacts);
+
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -60,6 +62,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 		})();
 	  }, []);
 
+	
 	const onContactLongPress = (id) => {
     if (selectedContacts.indexOf(id) !== -1) {
       setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
@@ -95,12 +98,15 @@ const Contacts = function( {navigation: { navigate }} ) {
 			<Toolbar 
 				onAdd={() => setIsAddModalOpen(true)}
 				onModify={() => test()}
+				filteredDataSource={filteredContacts}
+				setFilteredDataSource={setFilteredContacts}
+				masterDataSource={contacts}
 			/>
 			<View style={{flex:1}}>
 				<ContactList 
 					onLongPress={(id) => onContactLongPress(id)}
 					selectedContacts={selectedContacts}
-					contacts={contacts}
+					contacts={filteredContacts}
 				/>
 			</View>
 			<AddModal

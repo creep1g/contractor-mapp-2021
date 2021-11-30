@@ -7,7 +7,7 @@ import styles from './styles';
 import Search from '../search';
 
 const Toolbar = function ({
-  hasSelected, name, onAdd, onRemove, onModify, source
+  hasSelected, name, onAdd, onRemove, onModify, filteredDataSource, setFilteredDataSource, masterDataSource
 }) {
   return (
     <View
@@ -15,7 +15,7 @@ const Toolbar = function ({
       style={styles.toolbar}
     >
       
-	<Search  source={ source }/>
+	<Search  filteredDataSource={ filteredDataSource } masterDataSource={ masterDataSource } setFilteredDataSource={ setFilteredDataSource }/>
 			
 		<TouchableHighlight
         style={styles.toolbarAction}
