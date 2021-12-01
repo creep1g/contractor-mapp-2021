@@ -111,6 +111,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 					onLongPress={(id) => onContactLongPress(id)}
 					selectedContacts={selectedContacts}
 					contacts={filteredContacts}
+					onSelect={(user) => navigate('Details', { user: user })}
 				/>
 			</View>
 			<AddModal

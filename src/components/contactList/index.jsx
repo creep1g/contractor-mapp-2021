@@ -31,8 +31,13 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 			renderItem={ ({ item }) => (
 				<TouchableOpacity 
 					onLongPress={() => onLongPress(item.id)} 
+					onPress={() => onSelect(item)}
 					style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
-					<View style={[ style.contact, { backgroundColor: isSelected(item.id) ? 'lightblue' : 'lightgrey' } ]} >
+					
+					<View style={[ style.contact, { 
+						backgroundColor: isSelected(item.id) 
+														 ? 'lightblue' 
+														 : 'lightgrey' } ]} >
 
 						{
 							hasImage(item.image)
