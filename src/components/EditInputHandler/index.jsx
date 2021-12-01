@@ -5,20 +5,34 @@ import {
 } from 'react-native';
 import styles from './styles';
 import * as imageService from '../../services/imageService';
-import { addImage } from '../../services/fileService';
+import { addImage, } from '../../services/fileService';
 
 const EditInputHandler = function ({selectPhoto, closeModal, user}) {
-  const [inputs, setInputs] = useState({
-    name: user.name,
-    number: user.number,
-    image: user.image,
+	
+	const userObj = JSON.parse(user);
+
+	const [inputs, setInputs] = useState({
+    name: userObj.name,
+    number: userObj.number,
+    image: userObj.image,
   });
+	
+	const updateContact = () => {
+		const updatedUser = {
+			name: inputs.name,
+			number: inputs.number,
+			image: inputs.image,
+		}
+		return (updatedUser);
+	}
 
   const inputHandler = (name, value) => {
+		console.log("INPUT");
     setInputs({
       ...inputs,
       [name]:value,
     });
+		// console.log(userObj);
   };
 
   const takePhoto = async () => {
@@ -72,7 +86,8 @@ const EditInputHandler = function ({selectPhoto, closeModal, user}) {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={closeModal}
+          onPress={updateContact()}
+					onPress={closeModal}
           style={styles.shadow, styles.button}
         >
           <Text style={styles.text}>Update Contact</Text>

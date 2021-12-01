@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Linking, Alert, View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import styles from './styles';
 import Buttons from '../../components/ButtonArray';
@@ -9,44 +9,32 @@ const Details = function( {route, navigation: { navigate }} ){
   
   const user = route.params.user;
 
+	const [ gotUser, setGotUser ] = useState(null)
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 
-  const getContact = async (location) => {
-	  console.log(location);
-	contact = await FileService.loadContact(location);
-	
-	
-	// const newContact = {
-		// id: contacts.length + 1,
-		// name: input.name,
-		// image: input.image,
-		// number: input.number,
-		// location: '',
-	// };
-	// setContacts([...contacts, newContact]);
-	// setFilteredContacts([...filteredContacts, newContact]);
-	// newContact.location = await fileService.addContact(newContact);
-	//console.log(newContact);
-	// setIsAddModalOpen(false);
-	// const bla = await fileService.loadContact(newContact.location);
-	// console.log(JSON.parse(bla));
-  };
-
-  console.log(getContact(user.location))
-  const callNumber = ( phone ) => {
-	let phoneNumber = phone;
-	if (Platform.OS !== 'android'){
-		phoneNumber = `tel:${phone}`;
-	}
-	else{
-		phoneNumber = `tel:${phone}`;
+	useEffect(() => {
+		async function get() {
+			contact = await FileService.loadContact(user.location)
+			setGotUser(contact)
 		}
-	Linking.canOpenURL(phoneNumber).then(() =>{
-			return Linking.openURL(phoneNumber);
-	})
-		.catch((err) => console.log(err));
-}
+		get();
+	}, []);
+
+  const callNumber = ( phone ) => {
+		let phoneNumber = phone;
+		if (Platform.OS !== 'android'){
+			phoneNumber = `tel:${phone}`;
+		}
+		else{
+			phoneNumber = `tel:${phone}`;
+			}
+		Linking.canOpenURL(phoneNumber).then(() =>{
+				return Linking.openURL(phoneNumber);
+		})
+			.catch((err) => console.log(err));
+	}
 
 	
   const textNumber = ( phone ) => {
@@ -112,7 +100,7 @@ const Details = function( {route, navigation: { navigate }} ){
       <EditModal
         isOpen={isEditModalOpen}
         closeModal={() => setIsEditModalOpen(false)}
-		  user={getContact(user.location)}
+				user={gotUser}
       />
 	</View>
 	)

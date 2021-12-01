@@ -7,8 +7,6 @@ import EditInputHandler from '../EditInputHandler';
 const EditModal = function ({
   isOpen, closeModal, user, 
 }) {
-	console.log("This is user");
-	console.log(user);
   return (
     <Modal
       style={styles.modal}
@@ -19,7 +17,7 @@ const EditModal = function ({
       <EditInputHandler
         style={styles.modal}
         closeModal={closeModal}
-		user={user}
+				user={user}
       />
     </Modal>
   );

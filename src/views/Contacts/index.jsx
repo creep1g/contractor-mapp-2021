@@ -84,8 +84,8 @@ const Contacts = function( {navigation: { navigate }} ) {
 	};
 	setContacts([...contacts, newContact]);
 	setFilteredContacts([...filteredContacts, newContact]);
-	// newContact.location = await fileService.addContact(newContact);
-	//console.log(newContact);
+	newContact.location = await fileService.addContact(newContact);
+	console.log(newContact);
 	setIsAddModalOpen(false);
 	const bla = await fileService.loadContact(newContact.location);
 	// console.log(JSON.parse(bla));
