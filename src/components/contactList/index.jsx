@@ -2,17 +2,8 @@ import React from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import style from './styles';
 
-const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) => {
+const ContactList = ( { contacts, onSelect } ) => {
 
-
-	const isSelected = (id) => {
-		if (selectedContacts.indexOf(id) !== -1) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 
 	const sortedContacts = contacts.sort((first, second) => {
 		return first.name.toUpperCase() > second.name.toUpperCase() ? 1 : -1;
@@ -30,14 +21,9 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 			data={sortedContacts}
 			renderItem={ ({ item }) => (
 				<TouchableOpacity 
-					onLongPress={() => onLongPress(item.id)} 
-					onPress={() => onSelect(item)}
-					style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
+					onPress={() => onSelect(item)} >
 					
-					<View style={[ style.contact, { 
-						backgroundColor: isSelected(item.id) 
-														 ? 'lightblue' 
-														 : 'lightgrey' } ]} >
+					<View style={ style.contact } >
 
 						{
 							hasImage(item.image)
