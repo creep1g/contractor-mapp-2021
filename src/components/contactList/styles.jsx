@@ -8,10 +8,15 @@ export default StyleSheet.create({
 		padding: 10,
 		height: 100,
 		flexDirection: 'row',
+		borderRadius: 10,
 		elevation: 4,
+		// IOS SHADOW
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		shadowRadius: 2
+		shadowOffset: {
+			height: 0.2,
+			width: 1
+		}
 	},
 
 	name: {

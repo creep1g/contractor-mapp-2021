@@ -11,8 +11,16 @@ export default StyleSheet.create({
 		fontSize: 16,
 		padding: 10,
 		color: 'white',
-		elevation: 4,
 		borderRadius: 10,
+		overflow: 'hidden',
+		elevation: 4,
+		// IOS SHADOW
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		shadowOffset: {
+			height: 0.2,
+			width: 1
+		}
 
 	},
 
@@ -21,6 +29,14 @@ export default StyleSheet.create({
 		marginRight: 10,
 		borderRadius: 10,
 		elevation: 4,
+		// IOS shadow
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		shadowOffset: {
+			height: 0.2,
+			width: 1
+		}
+
 	},
 }
 );

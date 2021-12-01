@@ -14,7 +14,14 @@ export default StyleSheet.create({
 		minHeight: 40,
 		borderRadius: 30,
 		elevation: 4,
-		backgroundColor: 'lightgray'
+		backgroundColor: 'lightgray',
+		// IOS SHADOW
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		shadowOffset: {
+			height: 0.2,
+			width: 1
+		}
 	},
 
 	phone: {
