@@ -82,7 +82,11 @@ export const getAllContacts = async () => {
     await setupDirectory(contactDirectory)
     const result = await onException(() => FileSystem.readDirectoryAsync(contactDirectory));
     return Promise.all(result.map(async contact => {
-        console.log(contact);
+        return {
+            name: contact,
+            type: 'string',
+            file: await loadContact(contact)
+        }
     }));
 }
 
