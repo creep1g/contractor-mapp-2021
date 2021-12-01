@@ -21,12 +21,15 @@ const Contacts = function( {navigation: { navigate }} ) {
 		return contactList;
 	}
 
-	const [ contacts, setContacts ] = useState(data.contacts);
+	const [ contacts, setContacts ] = useState([]);
+
+	const [filteredContacts, setFilteredContacts] = useState([]);
 
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 	
+	/*
 	useEffect(() => {
 		(async () => {
 		  const contactList = await loadAllContacts();
@@ -65,17 +68,20 @@ const Contacts = function( {navigation: { navigate }} ) {
 						"number": data[i].phoneNumbers[0].number,
 						"location": ''
 					}
+					
 					if (data[i].imageAvailable) {
 						contact.image = data[i].image.uri
 					}
 					all.push(contact);
 				}
 				setContacts([...contacts, ...all])
+				setFilteredContacts([...filteredContacts, ...all])
 			}
 		  }
 		})();
 	  }, []);
-
+	*/
+	
 	const onContactLongPress = (id) => {
     if (selectedContacts.indexOf(id) !== -1) {
       setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
@@ -94,29 +100,34 @@ const Contacts = function( {navigation: { navigate }} ) {
 		location: '',
 	};
 	setContacts([...contacts, newContact]);
+	setFilteredContacts([...filteredContacts, newContact]);
 	newContact.location = await fileService.addContact(newContact);
 	//console.log(newContact);
 	setIsAddModalOpen(false);
-	//const bla = await fileService.loadContact(newContact.location);
-	//console.log(JSON.parse(bla));
+	const bla = await fileService.loadContact(newContact.location);
+	// console.log(JSON.parse(bla));
   };
 
-  const test = async () => {
-	const ppl = await fileService.getAllContacts();
-	console.log(ppl);
+  const test = () => {
+	    loadAllContacts();
   };
 
 	return(
 		<View style={{flex:1}}>
 			<Toolbar 
+				name="contactList"
 				onAdd={() => setIsAddModalOpen(true)}
-				onModify={() => loadAllContacts()}
+				test={() => test()}
+				filteredDataSource={filteredContacts}
+				setFilteredDataSource={setFilteredContacts}
+				masterDataSource={contacts}
 			/>
 			<View style={{flex:1}}>
 				<ContactList 
 					onLongPress={(id) => onContactLongPress(id)}
 					selectedContacts={selectedContacts}
-					contacts={contacts}
+					contacts={filteredContacts}
+					onSelect={(user) => navigate('Details', { user: user })}
 				/>
 			</View>
 			<AddModal

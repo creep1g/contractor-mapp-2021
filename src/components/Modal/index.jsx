@@ -1,9 +1,10 @@
 import React from 'react';
 import NativeModal from 'react-native-modal';
-import { View, Text } from 'react-native';
+import { KeyboardAvoidingView, View, Text } from 'react-native';
 import styles from './styles';
 
 const Modal = ({ isOpen, closeModal, title, children }) => (
+	<KeyboardAvoidingView>
     <NativeModal
         isVisible={isOpen}
         hasBackdrop={true}
@@ -16,6 +17,7 @@ const Modal = ({ isOpen, closeModal, title, children }) => (
             {children}
         </View>
     </NativeModal>
+		</KeyboardAvoidingView>
 );
 
 export default Modal;

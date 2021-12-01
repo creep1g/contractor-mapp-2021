@@ -1,0 +1,61 @@
+import React from 'react';
+import { View, Text, TouchableHighlight } from 'react-native';
+import styles from './styles';
+import { AntDesign } from '@expo/vector-icons';
+
+const Buttons = function({ makeCall, sendText, editContact, deleteContact }) {
+	return(
+			<View style={ styles.buttons }>
+
+				{/* Call */}
+				<TouchableHighlight
+					style={ styles.button }
+					activeOpacity={ 0.6 }
+					underlayColor={ "darkgreen" }
+					onPress={() => makeCall()} >
+					<AntDesign 
+						name="phone" 
+						style={[styles.icon, { backgroundColor: 'lime' }] }/>
+				</TouchableHighlight>
+
+				{/* TEXT */}
+				<TouchableHighlight
+					style={ styles.button }
+					activeOpacity={ 0.6 }
+					underlayColor={ "darkblue" }
+					onPress={() => sendText()} >
+					<AntDesign
+						name="message1"
+						style={[ styles.icon, { backgroundColor: 'lightblue' } ]} />
+				</TouchableHighlight>
+				
+				{/* EDIT */}
+
+				<TouchableHighlight
+					style={ styles.button }
+					activeOpacity={ 0.6 }
+					underlayColor={ "darkgray" }
+					onPress={() => editContact()} >
+					<AntDesign
+						name="edit"
+						style={[ styles.icon, { backgroundColor: 'lightgray' } ]} />
+				</TouchableHighlight>
+
+				{/* DELETE */}
+
+				<TouchableHighlight
+					style={ styles.button }
+					activeOpacity={ 0.6 }
+					underlayColor={ "darkred" }
+					onPress={() => console.log('DELETEING')} >
+					<AntDesign
+						name="delete"
+						style={[ styles.icon, { backgroundColor: 'red' } ]} />
+				</TouchableHighlight>
+
+			</View>
+	)
+	
+}
+
+export default Buttons;

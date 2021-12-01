@@ -7,41 +7,31 @@ import styles from './styles';
 import Search from '../search';
 
 const Toolbar = function ({
-  hasSelected, name, onAdd, onRemove, onModify, source
+  hasSelected, name, onAdd, onRemove, test, filteredDataSource, setFilteredDataSource, masterDataSource
 }) {
   return (
     <View
       styleName="horizontal"
       style={styles.toolbar}
     >
-      
-	<Search  source={ source }/>
-			
-		<TouchableHighlight
-        style={styles.toolbarAction}
-        onPress={() => onAdd()}
-      >
-        <AntDesign name="adduser" style={styles.toolbarActionText}/>
+     
+      <Search  
+	    filteredDataSource={ filteredDataSource } 
+		masterDataSource={ masterDataSource } 
+		setFilteredDataSource={ setFilteredDataSource }/>
+	  
+	  <TouchableHighlight
+		style={styles.toolbarAction}
+	    onPress={() => onAdd()} >
+		<AntDesign name="adduser" style={styles.toolbarActionText}/>
+	  </TouchableHighlight>
 
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.toolbarAction}
-        //disabled={hasSelected !== 1}
-        onPress={onModify}
-      >
-        <AntDesign name="edit"
-          style={[styles.toolbarActionText, !(hasSelected === 1) ? { color: 'rgba(155, 155, 155, .5)' } : {}]}
-        />
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.toolbarAction}
-        disabled={!hasSelected > 0}
-        onPress={onRemove}
-      >
-        <AntDesign name="delete"
-          style={[styles.toolbarActionText, !(hasSelected > 0) ? { color: 'rgba(155, 155, 155, .5)' } : {}]}
-        />
-      </TouchableHighlight>
+    <TouchableHighlight
+		style={styles.toolbarAction}
+	    onPress={test} >
+		<AntDesign name="adduser" style={styles.toolbarActionText}/>
+	  </TouchableHighlight>
+
     </View>
   );
 };
