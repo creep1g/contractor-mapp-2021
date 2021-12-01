@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import ContactList from '../../components/contactList';
-import data from '../../data/data.json';
 import Toolbar from '../../components/toolbar';
 import * as Contact from 'expo-contacts';
 import AddModal from '../../components/AddModal';
-import { addImage } from '../../services/fileService';
-import * as imageService from '../../services/imageService';
 import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
-
-	const loadAllContacts = async () => {
-		const contactObjects = await fileService.getAllContacts();
-		const contactList = contactObjects.map(contact => {
-			return JSON.parse(contact.file);
-		});
-		return contactList;
-	}
 
 	const [ contacts, setContacts ] = useState([]);
 
@@ -26,7 +15,17 @@ const Contacts = function( {navigation: { navigate }} ) {
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
+
 	
+	
+	const loadAllContacts = async () => {
+		const contactObjects = await fileService.getAllContacts();
+		const contactList = contactObjects.map(contact => {
+			return JSON.parse(contact.file);
+		});
+		return contactList;
+	}
+
     useEffect(() => {
         (async () => {
             const contacts = await loadAllContacts();
@@ -45,20 +44,18 @@ const Contacts = function( {navigation: { navigate }} ) {
   };
 
   const addContact = async (input) => {
+	  const nextId = await fileService.nextId();
 	const newContact = {
-		id: contacts.length + 1,
+		id: nextId,
 		name: input.name,
 		image: input.image,
 		number: input.number,
 		location: '',
 	};
+	await fileService.addContact(newContact);
 	setContacts([...contacts, newContact]);
 	setFilteredContacts([...filteredContacts, newContact]);
-	newContact.location = await fileService.addContact(newContact);
-	//console.log(newContact);
 	setIsAddModalOpen(false);
-	const bla = await fileService.loadContact(newContact.location);
-	// console.log(JSON.parse(bla));
   };
 
   const importContacts = async () => {
@@ -72,22 +69,10 @@ const Contacts = function( {navigation: { navigate }} ) {
 			  ]
 		  });
 		  if (data.length > 0) {
-			  let currentHighId = 1;
-			  if (contacts.length > 0) {
-				currentHighId = contacts.reduce(function(prev, current){ 
-					if (current.id > prev.id){
-						return current.id;
-					}
-					else {
-						return prev;
-					}
-				});
-			  }
 			let all = [];
 			for (var i = 0; i < data.length; i++) {
-				let newId = currentHighId + 1 + all.length;
+				let newId = await fileService.nextId();
 				const contact = {
-					// Needs to be fixed so id's don't get mixed up! 
 					"id": newId,
 					"name": data[i].name,
 					"image": '',
@@ -102,13 +87,17 @@ const Contacts = function( {navigation: { navigate }} ) {
 			}
 			setContacts([...contacts, ...all])
 			setFilteredContacts([...filteredContacts, ...all])
+			await fileService.importing();
 		  }
 	  }
   }
 
-  const test = () => {
+  const test = async () => {
 	    //loadAllContacts();
-		importContacts();
+		await importContacts();
+		//fileService.cleanDirectory();
+		const settings = await fileService.getSettings();
+		console.log(settings);
   };
 
 	return(
