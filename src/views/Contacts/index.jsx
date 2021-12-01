@@ -6,6 +6,7 @@ import * as Contact from 'expo-contacts';
 import AddModal from '../../components/AddModal';
 import ImportModal from '../../components/ImportModal';
 import * as fileService from '../../services/fileService';
+import * as encoding from 'text-encoding';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
@@ -54,7 +55,8 @@ const Contacts = function( {navigation: { navigate }} ) {
   };
 
   const importContacts = async () => {
-	  const {status} = await Contact.requestPermissionsAsync();
+	  const encode = new encoding.TextEncoder()
+		const {status} = await Contact.requestPermissionsAsync();
 	  if (status === 'granted') {
 		  const {data} = await Contact.getContactsAsync({
 			  fields: [
@@ -62,17 +64,22 @@ const Contacts = function( {navigation: { navigate }} ) {
 				  Contact.Fields.Image,
 				  Contact.Fields.PhoneNumbers,
 			  ]
-		  });
+		  } );
+			console.log(data);
 		  if (data.length > 0) {
 			let all = [];
 			for (var i = 0; i < data.length; i++) {
 				let newId = await fileService.nextId();
 				const contact = {
 					"id": newId,
+					"fileName": encode.encode(data[i].name),
 					"name": data[i].name,
 					"image": '',
 					"number": data[i].phoneNumbers[0].number,
 					"location": ''
+				}
+				if (data[i].name){
+					console.log(data[i].name);
 				}
 				if (data[i].imageAvailable) {
 					contact.image = data[i].image.uri
