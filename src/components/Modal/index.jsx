@@ -4,8 +4,7 @@ import { KeyboardAvoidingView, View, Text } from 'react-native';
 import styles from './styles';
 
 const Modal = ({ isOpen, closeModal, title, children }) => (
-	<KeyboardAvoidingView>
-    <NativeModal
+	 <NativeModal
         isVisible={isOpen}
         hasBackdrop={true}
         onBackButtonPress={closeModal}
@@ -18,7 +17,6 @@ const Modal = ({ isOpen, closeModal, title, children }) => (
             {children}
         </View>
     </NativeModal>
-		</KeyboardAvoidingView>
 );
 
 export default Modal;
