@@ -4,6 +4,7 @@ import ContactList from '../../components/contactList';
 import Toolbar from '../../components/toolbar';
 import * as Contact from 'expo-contacts';
 import AddModal from '../../components/AddModal';
+import ImportModal from '../../components/ImportModal';
 import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
@@ -16,7 +17,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-	
+	const [ isImportModalOpen, setIsImportModalOpen] = useState(false);
 	
 	const loadAllContacts = async () => {
 		const contactObjects = await fileService.getAllContacts();
@@ -31,6 +32,10 @@ const Contacts = function( {navigation: { navigate }} ) {
             const contacts = await loadAllContacts();
             setContacts(contacts);
 			setFilteredContacts(contacts);
+			const imported = await fileService.hasImported();
+			if (!imported) {
+				setIsImportModalOpen(true);
+			}
         })();
     }, []);
 
@@ -88,14 +93,15 @@ const Contacts = function( {navigation: { navigate }} ) {
 			setContacts([...contacts, ...all])
 			setFilteredContacts([...filteredContacts, ...all])
 			await fileService.importing();
+			setIsImportModalOpen(false);
 		  }
 	  }
   }
 
   const test = async () => {
 	    //loadAllContacts();
-		await importContacts();
-		//fileService.cleanDirectory();
+		//await importContacts();
+		await fileService.cleanDirectory();
 		const settings = await fileService.getSettings();
 		console.log(settings);
   };
@@ -123,6 +129,11 @@ const Contacts = function( {navigation: { navigate }} ) {
 				closeModal={() => setIsAddModalOpen(false)}
 				addContact={(input) => addContact(input)}
 				selectFromCameraRoll={() => selectFromCameraRoll()}
+			/>
+			<ImportModal
+				isOpen={isImportModalOpen}
+				closeModal={() => setIsImportModalOpen(false)}
+				importing={() => importContacts()}
 			/>
 		</View>
 	)

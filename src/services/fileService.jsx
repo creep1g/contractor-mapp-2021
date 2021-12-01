@@ -57,9 +57,9 @@ export const importing = async () => {
 }
 
 export const cleanDirectory = async () => {
-    await FileSystem.deleteAsync(imageDirectory);
-    await FileSystem.deleteAsync(contactDirectory);
-    await FileSystem.deleteAsync(systemDirectory);
+    //await onException(() => FileSystem.deleteAsync(imageDirectory));
+    await onException(() => FileSystem.deleteAsync(contactDirectory));
+    await onException(() => FileSystem.deleteAsync(systemDirectory));
 }
 
 export const copyFile = async (file, newLocation) => {
