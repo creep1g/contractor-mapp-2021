@@ -17,31 +17,44 @@ const Toolbar = function ({
       
 	<Search  filteredDataSource={ filteredDataSource } masterDataSource={ masterDataSource } setFilteredDataSource={ setFilteredDataSource }/>
 			
-		<TouchableHighlight
-        style={styles.toolbarAction}
-        onPress={() => onAdd()}
-      >
-        <AntDesign name="adduser" style={styles.toolbarActionText}/>
+		{
+		name==="contactList"
+		?
+			<TouchableHighlight
+        	style={styles.toolbarAction}
+        	onPress={() => onAdd()}
+      		>	
+        	<AntDesign name="adduser" style={styles.toolbarActionText}/>
 
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.toolbarAction}
-        //disabled={hasSelected !== 1}
-        onPress={onModify}
-      >
-        <AntDesign name="edit"
-          style={[styles.toolbarActionText, !(hasSelected === 1) ? { color: 'rgba(155, 155, 155, .5)' } : {}]}
-        />
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.toolbarAction}
-        disabled={!hasSelected > 0}
-        onPress={onRemove}
-      >
-        <AntDesign name="delete"
-          style={[styles.toolbarActionText, !(hasSelected > 0) ? { color: 'rgba(155, 155, 155, .5)' } : {}]}
-        />
-      </TouchableHighlight>
+      		</TouchableHighlight>
+	  	:
+
+			<TouchableHighlight
+    		style={styles.toolbarAction}
+    		//disabled={hasSelected !== 1}
+    		onPress={onModify}
+      		>
+        		<AntDesign name="edit"
+          		style={[styles.toolbarActionText, !(hasSelected === 1) ? 				{ color: 'rgba(155, 155, 155, .5)' } : {}]}
+        		/>
+      			</TouchableHighlight>
+		}
+
+		{
+		name==="detail"
+		?
+			<TouchableHighlight
+        	style={styles.toolbarAction}
+        	disabled={!hasSelected > 0}
+        	onPress={onRemove}
+      		>
+        		<AntDesign name="delete"
+          		style={[styles.toolbarActionText, !(hasSelected > 0) ? { 				 color: 'rgba(155, 155, 155, .5)' } : {}]}
+        		/>
+      		</TouchableHighlight>
+		:
+			<></>
+		}
     </View>
   );
 };

@@ -33,26 +33,13 @@ const Search = ( { masterDataSource, filteredDataSource, setFilteredDataSource }
 	};
 
 
-  const ItemView = ({ item }) => {
-    return (
-      // Flat List Item
-      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {item.id}
-        {'.'}
-        {item.name.toUpperCase()}
-      </Text>
-    );
-  };
-
-
 	return (
 		<SafeAreaView style={{flex:1}}>
 			<View>
 				<SearchBar
 					round
-					border
-					// backgroundColor={"#444444"}
-					style={ styles.searchBar }
+					containerStyle={styles.container}
+					inputContainerStyle={styles.inputContainerStyle}
 					searchIcon={{ size: 24 }}
 					onChangeText={(text) => searchFilterFunction(text)}
 					onClear={(text) => searchFilterFunction('')}

@@ -99,6 +99,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 	return(
 		<View style={{flex:1}}>
 			<Toolbar 
+				name="contactList"
 				onAdd={() => setIsAddModalOpen(true)}
 				onModify={() => test()}
 				filteredDataSource={filteredContacts}
