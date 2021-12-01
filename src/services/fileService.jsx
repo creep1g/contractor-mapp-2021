@@ -2,6 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import uuid from 'react-native-uuid';
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
+const systemDirectory = `${FileSystem.documentDirectory}system`;
 
 const onException = (cb, errorHandler) => {
     try {
@@ -14,8 +15,51 @@ const onException = (cb, errorHandler) => {
     }
 }
 
+const setupSettings = async () => {
+    const dir = await FileSystem.getInfoAsync(systemDirectory);
+    if (!dir.exists) {
+        await FileSystem.makeDirectoryAsync(systemDirectory);
+        const settings = {
+            "nextId": 1,
+            "hasImported": false,
+        };    
+        await onException(() => FileSystem.writeAsStringAsync(`${systemDirectory}/settings.json`, JSON.stringify(settings)));
+    }
+}
+
+export const getSettings = async () => {
+    return await onException(() => FileSystem.readAsStringAsync(`${systemDirectory}/settings.json`), {
+        encoding: FileSystem.EncodingType.UTF8
+    });
+}
+
+export const updateSettings = async (newSettings) => {
+    await onException(() => FileSystem.deleteAsync(`${systemDirectory}/settings.json`, {idempotent: true}));
+    await onException(() => FileSystem.writeAsStringAsync(`${systemDirectory}/settings.json`, JSON.stringify(newSettings)));
+}
+
+export const nextId = async () => {
+    let settings = JSON.parse(await getSettings());
+    settings.nextId += 1;
+    await updateSettings(settings);
+    return settings.nextId - 1;
+}
+
+export const hasImported = async () => {
+    const settings = JSON.parse(await getSettings());
+    return settings.hasImported;
+}
+
+export const importing = async () => {
+    const settings = JSON.parse(await getSettings());
+    settings.hasImported = true;
+    await updateSettings(settings);
+}
+
 export const cleanDirectory = async () => {
+    await FileSystem.deleteAsync(imageDirectory);
     await FileSystem.deleteAsync(contactDirectory);
+    await FileSystem.deleteAsync(systemDirectory);
 }
 
 export const copyFile = async (file, newLocation) => {
@@ -85,7 +129,8 @@ export const setupDirectory = async (directoryName) => {
 }
 
 export const getAllContacts = async () => {
-    await setupDirectory(contactDirectory)
+    await setupDirectory(contactDirectory);
+    await setupSettings();
     const result = await onException(() => FileSystem.readDirectoryAsync(contactDirectory));
     return Promise.all(result.map(async contact => {
         return {
