@@ -6,7 +6,6 @@ export default StyleSheet.create ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 80,
     backgroundColor: '#393E42',
   },
   toolbarAction: {
@@ -15,6 +14,7 @@ export default StyleSheet.create ({
   toolbarActionText: {
     fontWeight: 'bold',
     color: 'white',
+	padding: 5,
     fontSize: 16,
   },
 });

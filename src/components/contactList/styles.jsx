@@ -8,12 +8,18 @@ export default StyleSheet.create({
 		padding: 10,
 		height: 100,
 		flexDirection: 'row',
+		elevation: 4,
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		shadowRadius: 2
 	},
 
 	name: {
+		position: 'absolute',
 		fontSize: 25,
-		margin: 20,
-		paddingLeft: 20
+		top: 35,
+		left: 111,
+		paddingLeft: 5
 	},
 
 	image: {
