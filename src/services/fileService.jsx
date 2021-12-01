@@ -1,6 +1,5 @@
 import * as FileSystem from 'expo-file-system';
 import uuid from 'react-native-uuid';
-const imageDirectory = `${FileSystem.documentDirectory}images`;
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const systemDirectory = `${FileSystem.documentDirectory}system`;
 
@@ -69,18 +68,6 @@ export const copyFile = async (file, newLocation) => {
     }));
 }
 
-export const addImage = async imageLocation => {
-    const folderSplit = imageLocation.split('/');
-    const fileName = folderSplit[folderSplit.length - 1];
-    await onException(() => copyFile(imageLocation, `${imageDirectory}/${fileName}`));
-
-    return {
-        name: fileName,
-        type: 'image',
-        file: await loadImage(fileName)
-    };
-}
-
 export const addContact = async newContact => {
     var uid = uuid.v1();
     console.log(`${contactDirectory}/${newContact.name}-${uid}.json`);
@@ -96,16 +83,6 @@ export const updateContact = async contact => {
 
 export const removeContact = async location => {
     return await onException(() => FileSystem.deleteAsync(location, {idempotent: true}));
-}
-
-export const remove = async name => {
-    return await onException(() => FileSystem.deleteAsync(`${imageDirectory}/${name}`, {idempotent: true}));
-}
-
-export const loadImage = async fileName => {
-    return await onException(() => FileSystem.readAsStringAsync(`${imageDirectory}/${fileName}`, {
-        encoding: FileSystem.EncodingType.Base64
-    }));
 }
 
 export const loadContact = async fileName => {
@@ -141,16 +118,3 @@ export const getAllContacts = async () => {
     }));
 }
 
-export const getAllImages = async () => {
-    // Check if directory exists
-    await setupDirectory(imageDirectory);
-
-    const result = await onException(() => FileSystem.readDirectoryAsync(imageDirectory));
-    return Promise.all(result.map(async fileName => {
-        return {
-            name: fileName,
-            type: 'image',
-            file: await loadImage(fileName)
-        };
-    }));
-}

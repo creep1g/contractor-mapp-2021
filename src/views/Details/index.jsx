@@ -4,8 +4,9 @@ import styles from './styles';
 import Buttons from '../../components/ButtonArray';
 import EditModal from '../../components/EditModal';
 import * as FileService from '../../services/fileService';
+import Contacts from '../Contacts';
 
-const Details = function( {route} ){
+const Details = function( {route, navigation: { goBack}}){
 
   // State persistance is not important so we ignore these warnings.
   LogBox.ignoreLogs([
@@ -41,7 +42,7 @@ const Details = function( {route} ){
   // Asyncronousy get access to user file
   useEffect(() => {
     async function get() {
-	  contact = await FileService.loadForUpdate(user.location)
+	  const contact = await FileService.loadForUpdate(user.location)
 	  setGotUser(contact)
 	  }
 	  get();
@@ -77,7 +78,16 @@ const Details = function( {route} ){
 	})
 		.catch((err) => console.log(err));
 }
-
+	const deleteContact = async () => {
+		await FileService.removeContact(user.location);
+		const contactObjects = await FileService.getAllContacts();
+		const contactList = contactObjects.map(contact => {
+			return JSON.parse(contact.file);
+		});
+		setContacts(contactList);
+		setFilteredContacts(contactList);
+		goBack();
+	}
 
   return(	
 	<View style={{flex: 1}}>
@@ -107,6 +117,7 @@ const Details = function( {route} ){
 		makeCall={() => callNumber(currUser.number)}
 		sendText={() => textNumber(currUser.number)}
 		editContact={() => setIsEditModalOpen(true)}
+		deleteContact={() => deleteContact()}
 	/>
 		
 
