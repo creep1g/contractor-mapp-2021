@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import data from '../../data/data.json';
 import styles from './styles';
 
 

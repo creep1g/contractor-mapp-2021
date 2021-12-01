@@ -27,6 +27,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 
     useEffect(() => {
         (async () => {
+			//test();
             const contacts = await loadAllContacts();
             setContacts(contacts);
 			setFilteredContacts(contacts);
@@ -90,7 +91,7 @@ const Contacts = function( {navigation: { navigate }} ) {
   const test = async () => {
 	    //loadAllContacts();
 		//await importContacts();
-		//await fileService.cleanDirectory();
+		await fileService.cleanDirectory();
 		//const settings = await fileService.getSettings();
 		//console.log(settings);
 		const contacts = await loadAllContacts();

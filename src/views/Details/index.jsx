@@ -4,7 +4,6 @@ import styles from './styles';
 import Buttons from '../../components/ButtonArray';
 import EditModal from '../../components/EditModal';
 import * as FileService from '../../services/fileService';
-import Contacts from '../Contacts';
 
 const Details = function( {route, navigation: { goBack}}){
 

@@ -14,6 +14,8 @@ const onException = (cb, errorHandler) => {
     }
 }
 
+// Settings 
+
 const setupSettings = async () => {
     const dir = await FileSystem.getInfoAsync(systemDirectory);
     if (!dir.exists) {
@@ -55,6 +57,8 @@ export const importing = async () => {
     await updateSettings(settings);
 }
 
+// Tools
+
 export const cleanDirectory = async () => {
     //await onException(() => FileSystem.deleteAsync(imageDirectory));
     await onException(() => FileSystem.deleteAsync(contactDirectory));
@@ -68,6 +72,15 @@ export const copyFile = async (file, newLocation) => {
         to: newLocation
     }));
 }
+
+export const setupDirectory = async (directoryName) => {
+    const dir = await FileSystem.getInfoAsync(directoryName);
+    if (!dir.exists) {
+        await FileSystem.makeDirectoryAsync(directoryName);
+    }
+}
+
+// Contact
 
 export const addContact = async newContact => {
     var uid = uuid.v1();
@@ -97,13 +110,6 @@ export const loadForUpdate = async fileName => {
 			encoding: FileSystem.EncodingType.UTF8
 		});
 
-}
-
-export const setupDirectory = async (directoryName) => {
-    const dir = await FileSystem.getInfoAsync(directoryName);
-    if (!dir.exists) {
-        await FileSystem.makeDirectoryAsync(directoryName);
-    }
 }
 
 export const getAllContacts = async () => {
