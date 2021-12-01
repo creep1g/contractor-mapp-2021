@@ -3,7 +3,6 @@ import uuid from 'react-native-uuid';
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
-
 const onException = (cb, errorHandler) => {
     try {
         return cb();
@@ -65,8 +64,8 @@ export const loadImage = async fileName => {
     }));
 }
 
-export const loadContact = async location => {
-    return await onException(() => FileSystem.readAsStringAsync(location), {
+export const loadContact = async fileName => {
+    return await onException(() => FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`), {
         encoding: FileSystem.EncodingType.UTF8
     });
 }
