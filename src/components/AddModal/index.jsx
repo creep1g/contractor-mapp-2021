@@ -21,6 +21,7 @@ const AddModal = function ({
         takePhoto={takePhoto}
         selectPhoto={selectPhoto}
       />
+	
     </Modal>
   );
 };

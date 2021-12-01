@@ -34,6 +34,8 @@ const ContactInputHandler = function ({addContact, selectPhoto, closeModal}) {
     inputHandler('image', photo);
 	  if (photo.length > 0) {await addImage(photo)}
   }
+	
+	let img = '';
 
   return (
     <KeyboardAvoidingView>
