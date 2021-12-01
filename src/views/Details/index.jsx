@@ -32,6 +32,7 @@ const Details = function( {route} ){
     await FileService.removeContact(currUser.location);
     setCurrUser(updatedContact);
     setIsEditModalOpen(false);
+	await FileService.addContact(updatedContact);
     newList = filteredContacts.filter((contact) => contact.id !== updatedContact.id)
     setFilteredContacts([...newList, updatedContact]);
     setContacts([...newList, updatedContact]);
