@@ -17,8 +17,8 @@ const EditModal = function ({
       <EditInputHandler
         style={styles.modal}
         closeModal={closeModal}
-		user={user}
-		updateContact={updateContact}
+				user={user}
+				updateContact={updateContact}
       />
     </Modal>
   );

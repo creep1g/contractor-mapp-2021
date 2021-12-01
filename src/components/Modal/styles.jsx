@@ -9,8 +9,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     body: {
-        // flex: 1,
-				height: 200,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         flexGrow: .3,

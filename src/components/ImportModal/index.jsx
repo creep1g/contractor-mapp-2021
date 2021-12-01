@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import styles from './styles';
 import {
-  Text, TouchableOpacity,
+  Text, TouchableOpacity, View
 } from 'react-native';
 
 const ImportModal = function ({
@@ -12,22 +12,28 @@ const ImportModal = function ({
   return (
     <Modal
       style={styles.modal}
+	  animationType={'slide'}
+	  transparent={true}
+	  
       isOpen={isOpen}
       closeModal={closeModal}
     >
-        <Text>Would you like to import your contacts?</Text>
-        <TouchableOpacity
-          onPress={importing}
-          style={styles.shadow, styles.button}
-        >
-          <Text style={styles.text}>Yes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={closeModal}
-          style={styles.shadow, styles.button}
-        >
-          <Text style={styles.text}>No</Text>
-        </TouchableOpacity>
+        <Text style={ styles.prompt }>Would you like to import your contacts?</Text>
+		<View style={ styles.buttonContainer }>
+		  <TouchableOpacity
+		    onPress={importing}
+			style={[styles.button, styles.shadow]}
+		  >
+            <Text style={styles.text}>Yes</Text>
+          </TouchableOpacity>
+          
+		  <TouchableOpacity
+            onPress={closeModal}
+            style={[styles.shadow, styles.button]}
+          >
+            <Text style={styles.text}>No</Text>
+          </TouchableOpacity>
+		</View>
     </Modal>
   );
 };

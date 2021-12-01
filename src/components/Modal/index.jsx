@@ -11,7 +11,8 @@ const Modal = ({ isOpen, closeModal, title, children }) => (
         onBackButtonPress={closeModal}
         onSwipeComplete={closeModal}
         swipeDirection={["up", "down"]}
-        style={styles.modal}>
+			  style={styles.modal}
+        >
         <View style={styles.body}>
             <Text>{title}</Text>
             {children}

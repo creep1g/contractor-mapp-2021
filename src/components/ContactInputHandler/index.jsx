@@ -60,13 +60,13 @@ const ContactInputHandler = function ({addContact, selectPhoto, closeModal}) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => takePhoto()}
-          style={styles.shadow, styles.button}
+          style={[styles.shadow, styles.button]}
         >
           <Text style={styles.text}>Take photo</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => selectFromCameraRoll()}
-          style={styles.shadow, styles.button}
+          style={[styles.shadow, styles.button]}
         >
           <Text style={styles.text}>From cameraroll</Text>
         </TouchableOpacity>
@@ -74,13 +74,13 @@ const ContactInputHandler = function ({addContact, selectPhoto, closeModal}) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => addContact(inputs)}
-          style={styles.shadow, styles.button}
+					style={[styles.shadow, styles.button]}
         >
           <Text style={styles.text}>Add contact</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={closeModal}
-          style={styles.shadow, styles.button}
+					style={[styles.shadow, styles.button]}
         >
           <Text style={styles.text}>Cancel</Text>
         </TouchableOpacity>

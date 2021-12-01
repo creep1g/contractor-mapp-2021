@@ -4,7 +4,7 @@ export default StyleSheet.create({
   buttonContainer: {
     // flex: 1,
     flexDirection: 'row',
-    paddingBottom: 20,
+    paddingBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -13,6 +13,7 @@ export default StyleSheet.create({
     marginTop: 0,
     padding: 5,
     textAlign: 'center',
+		color: 'white'
   },
 
   textInput: {
@@ -22,12 +23,15 @@ export default StyleSheet.create({
 
   button: {
     textAlign: 'center',
-    margin: 10,
-    borderColor: 'black',
-    borderWidth: 0.2,
-    // borderRadius: 10,
+		marginLeft: 10,
+		marginRight: 10,
+		marginTop: 5,
+		marginBottom: 5,
+    borderRadius: 10,
+		overflow: 'hidden',
+		width: 120,
     height: 30,
-    backgroundColor: '#BCFCF3',
+    backgroundColor: '#393E42',
   },
 
   input: {
