@@ -1,9 +1,40 @@
 import React from 'react';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import {Linking, Alert, View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import styles from './styles';
 import Buttons from '../../components/ButtonArray';
 
 const Details = function( {route, navigation: { navigate }} ){
+	
+	const callNumber = ( phone ) => {
+		let phoneNumber = phone;
+		if (Platform.OS !== 'android'){
+			phoneNumber = `tel:${phone}`;
+		}
+		else{
+			phoneNumber = `tel:${phone}`;
+		}
+		Linking.canOpenURL(phoneNumber).then(() =>{
+				return Linking.openURL(phoneNumber);
+		})
+			.catch((err) => console.log(err));
+	}
+
+	
+	const textNumber = ( phone ) => {
+		let phoneNumber = phone;
+		if (Platform.OS !== 'android'){
+			phoneNumber = `sms:${phone}`;
+		}
+		else{
+			phoneNumber = `sms:${phone}`;
+		}
+		Linking.canOpenURL(phoneNumber).then(() =>{
+				return Linking.openURL(phoneNumber);
+		})
+			.catch((err) => console.log(err));
+	}
+
+
 	// We probably need to pass in file location, for editing and such
 	const user = route.params.user;
 	console.log(user);
@@ -31,14 +62,17 @@ const Details = function( {route, navigation: { navigate }} ){
 			</View>
 
 		{/* Buttons ! */}
-		<Buttons />
+		<Buttons 
+			makeCall={() => callNumber(user.number)}
+			sendText={() => textNumber(user.number)}
+			/>
 		
 
 			<TouchableHighlight 
 				style={ styles.card }
 				activeOpacity={ 0.6 }
 				underlayColor={ 'darkgray' }
-				onPress={() => console.log('calling from card')}
+				onPress={() => callNumber(user.number)}
 			>
 				<View style={ { flex: 1 } }>
 					<Text style={ styles.phone }>Phone</Text>

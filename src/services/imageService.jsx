@@ -1,6 +1,4 @@
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera';
-
 
 const CAMERA_ROLL = 'CAMERA_ROLL'
 const CAMERA = 'CAMERA'
