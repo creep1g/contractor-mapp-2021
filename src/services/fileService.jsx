@@ -64,6 +64,7 @@ export const cleanDirectory = async () => {
     await onException(() => FileSystem.deleteAsync(contactDirectory));
     await onException(() => FileSystem.deleteAsync(systemDirectory));
 }
+cleanDirectory();
 
 cleanDirectory();
 export const copyFile = async (file, newLocation) => {
@@ -84,11 +85,11 @@ export const setupDirectory = async (directoryName) => {
 
 export const addContact = async newContact => {
     var uid = uuid.v1();
-    console.log(`${contactDirectory}/${newContact.name}-${uid}.json`);
+    console.log(`${contactDirectory}/${newContact.fileName}-${uid}.json`);
     await setupDirectory(contactDirectory);
-    newContact.location = `${contactDirectory}/${newContact.name}-${uid}.json`;
-    await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.name}-${uid}.json`, JSON.stringify(newContact)));
-    return `${contactDirectory}/${newContact.name}-${uid}.json`;
+    newContact.location = `${contactDirectory}/${newContact.fileName}-${uid}.json`;
+    await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.fileName}-${uid}.json`, JSON.stringify(newContact)));
+    return `${contactDirectory}/${newContact.fileName}-${uid}.json`;
 }
 
 export const updateContact = async contact => {

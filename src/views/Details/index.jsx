@@ -4,6 +4,7 @@ import styles from './styles';
 import Buttons from '../../components/ButtonArray';
 import EditModal from '../../components/EditModal';
 import * as FileService from '../../services/fileService';
+import * as encoding from 'text-encoding';
 
 const Details = function( {route, navigation: { goBack}}){
 
@@ -22,12 +23,14 @@ const Details = function( {route, navigation: { goBack}}){
 	
   // Update currUser
   const updateContact = async ( input ) => {
+		const encode = new encoding.TextEncoder();
     const updatedContact = {
       id: currUser.id,
-	  name: input.name,
-	  image: input.image,
-	  number: input.number,
-	  location: '',
+			fileName: encode.encode(input.name),
+			name: input.name,
+			image: input.image,
+			number: input.number,
+			location: '',
 	  };
     await FileService.removeContact(currUser.location);
     setCurrUser(updatedContact);
