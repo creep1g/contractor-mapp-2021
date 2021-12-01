@@ -7,7 +7,7 @@ import styles from './styles';
 import * as imageService from '../../services/imageService';
 import { addImage, } from '../../services/fileService';
 
-const EditInputHandler = function ({selectPhoto, closeModal, user}) {
+const EditInputHandler = function ({updateContact ,selectPhoto, closeModal, user}) {
 	
 	const userObj = JSON.parse(user);
 
@@ -17,22 +17,11 @@ const EditInputHandler = function ({selectPhoto, closeModal, user}) {
     image: userObj.image,
   });
 	
-	const updateContact = () => {
-		const updatedUser = {
-			name: inputs.name,
-			number: inputs.number,
-			image: inputs.image,
-		}
-		return (updatedUser);
-	}
-
   const inputHandler = (name, value) => {
-		console.log("INPUT");
     setInputs({
       ...inputs,
       [name]:value,
     });
-		// console.log(userObj);
   };
 
   const takePhoto = async () => {
@@ -86,8 +75,7 @@ const EditInputHandler = function ({selectPhoto, closeModal, user}) {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={updateContact()}
-					onPress={closeModal}
+		  onPress={() => updateContact(inputs)}
           style={styles.shadow, styles.button}
         >
           <Text style={styles.text}>Update Contact</Text>

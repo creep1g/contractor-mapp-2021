@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {Linking, LogBox, View, Text, Image, TouchableHighlight, Platform } from 'react-native';
+import {Linking, Alert, View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import styles from './styles';
 import Buttons from '../../components/ButtonArray';
 import EditModal from '../../components/EditModal';
 import * as FileService from '../../services/fileService';
 
 const Details = function( {route} ){
-
-  // State persistance is not important so we ignore these warnings.
-  LogBox.ignoreLogs([
-    'Non-serializable values were found in the navigation state',
-   ]);
   
-  const { user, setContacts, filteredContacts, setFilteredContacts } = route.params;
+  const { user, contacts, setContacts, filteredContacts, setFilteredContacts } = route.params;
   
   const [ currUser, setCurrUser ] = useState(user);
 
@@ -33,9 +28,10 @@ const Details = function( {route} ){
 	setCurrUser(updatedContact);
 	updatedContact.location = await FileService.addContact(updatedContact);
 	setIsEditModalOpen(false);
-	newList = filteredContacts.filter((contact) => contact.id !== updatedContact.id)
-	setFilteredContacts([...newList, updatedContact]);
-	setContacts([...newList, updatedContact]);
+	setFilteredContacts(filteredContacts.filter((contact) => contact.id !== updatedContact.id))
+	setFilteredContacts([...filteredContacts, updatedContact]);
+	// setContacts(contacts.filter((contact) => contact.id !== updatedContact.id))
+	// setContacts([...contacts, updatedContact]);
  };
 
   // Asyncronousy get access to user file

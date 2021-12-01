@@ -55,7 +55,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 	setContacts([...contacts, newContact]);
 	setFilteredContacts([...filteredContacts, newContact]);
 	newContact.location = await fileService.addContact(newContact);
-	console.log(newContact);
 	setIsAddModalOpen(false);
 	const bla = await fileService.loadContact(newContact.location);
 	// console.log(JSON.parse(bla));
@@ -126,8 +125,13 @@ const Contacts = function( {navigation: { navigate }} ) {
 					onLongPress={(id) => onContactLongPress(id)}
 					selectedContacts={selectedContacts}
 					contacts={filteredContacts}
-					onSelect={(user) => navigate('Details', { user: user })}
+					onSelect={(user) => navigate('Details', { user: user, 
+						contacts: contacts, 
+						filteredContacts: filteredContacts, 
+						setContacts: setContacts, 
+						setFilteredContacts: setFilteredContacts})}
 				/>
+
 			</View>
 			<AddModal
 				isOpen={isAddModalOpen}

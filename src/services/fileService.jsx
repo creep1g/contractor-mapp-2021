@@ -15,7 +15,7 @@ const onException = (cb, errorHandler) => {
 }
 
 export const cleanDirectory = async () => {
-    await FileSystem.deleteAsync(imageDirectory);
+    await FileSystem.deleteAsync(contactDirectory);
 }
 
 export const copyFile = async (file, newLocation) => {
@@ -68,6 +68,13 @@ export const loadContact = async fileName => {
     return await onException(() => FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`), {
         encoding: FileSystem.EncodingType.UTF8
     });
+}
+
+export const loadForUpdate = async fileName => {
+	return await onException(() => FileSystem.readAsStringAsync(`${fileName}`), {
+			encoding: FileSystem.EncodingType.UTF8
+		});
+
 }
 
 export const setupDirectory = async (directoryName) => {

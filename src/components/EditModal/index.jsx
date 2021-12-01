@@ -5,7 +5,7 @@ import styles from './styles';
 import EditInputHandler from '../EditInputHandler';
 
 const EditModal = function ({
-  isOpen, closeModal, user, 
+  isOpen, closeModal, user, updateContact
 }) {
   return (
     <Modal
@@ -17,7 +17,8 @@ const EditModal = function ({
       <EditInputHandler
         style={styles.modal}
         closeModal={closeModal}
-				user={user}
+		user={user}
+		updateContact={updateContact}
       />
     </Modal>
   );
