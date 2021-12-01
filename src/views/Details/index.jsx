@@ -21,22 +21,21 @@ const Details = function( {route} ){
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 	
   // Update currUser
- const updateContact = async ( input ) => {
-  const updatedContact = {
-    id: currUser.id,
-	name: input.name,
-	image: input.image,
-	number: input.number,
-	location: '',
-	};
-	await FileService.removeContact(currUser.location);
-	setCurrUser(updatedContact);
-	updatedContact.location = await FileService.addContact(updatedContact);
-	setIsEditModalOpen(false);
-	newList = filteredContacts.filter((contact) => contact.id !== updatedContact.id)
-	setFilteredContacts([...newList, updatedContact]);
-	setContacts([...newList, updatedContact]);
- };
+  const updateContact = async ( input ) => {
+    const updatedContact = {
+      id: currUser.id,
+	  name: input.name,
+	  image: input.image,
+	  number: input.number,
+	  location: '',
+	  };
+    await FileService.removeContact(currUser.location);
+    setCurrUser(updatedContact);
+    setIsEditModalOpen(false);
+    newList = filteredContacts.filter((contact) => contact.id !== updatedContact.id)
+    setFilteredContacts([...newList, updatedContact]);
+    setContacts([...newList, updatedContact]);
+  };
 
   // Asyncronousy get access to user file
   useEffect(() => {
