@@ -114,6 +114,13 @@ export const loadContact = async fileName => {
     });
 }
 
+export const loadForUpdate = async fileName => {
+	return await onException(() => FileSystem.readAsStringAsync(`${fileName}`), {
+			encoding: FileSystem.EncodingType.UTF8
+		});
+
+}
+
 export const setupDirectory = async (directoryName) => {
     const dir = await FileSystem.getInfoAsync(directoryName);
     if (!dir.exists) {

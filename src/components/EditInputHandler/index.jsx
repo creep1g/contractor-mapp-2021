@@ -5,15 +5,18 @@ import {
 } from 'react-native';
 import styles from './styles';
 import * as imageService from '../../services/imageService';
-import { addImage } from '../../services/fileService';
+import { addImage, } from '../../services/fileService';
 
-const EditInputHandler = function ({selectPhoto, closeModal, user}) {
-  const [inputs, setInputs] = useState({
-    name: user.name,
-    number: user.number,
-    image: user.image,
+const EditInputHandler = function ({updateContact ,selectPhoto, closeModal, user}) {
+	
+	const userObj = JSON.parse(user);
+
+	const [inputs, setInputs] = useState({
+    name: userObj.name,
+    number: userObj.number,
+    image: userObj.image,
   });
-
+	
   const inputHandler = (name, value) => {
     setInputs({
       ...inputs,
@@ -72,7 +75,7 @@ const EditInputHandler = function ({selectPhoto, closeModal, user}) {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={closeModal}
+		  onPress={() => updateContact(inputs)}
           style={styles.shadow, styles.button}
         >
           <Text style={styles.text}>Update Contact</Text>

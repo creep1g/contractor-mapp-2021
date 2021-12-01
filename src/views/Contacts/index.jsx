@@ -12,8 +12,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 
 	const [filteredContacts, setFilteredContacts] = useState([]);
 
-	const [ selectedContacts, setSelectedContacts ] = useState([]);
-
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 
 	
@@ -33,15 +31,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 			setFilteredContacts(contacts);
         })();
     }, []);
-
-	const onContactLongPress = (id) => {
-    if (selectedContacts.indexOf(id) !== -1) {
-      setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
-    }
-		else {
-      setSelectedContacts([...selectedContacts, id]);
-    }
-  };
 
   const addContact = async (input) => {
 	  const nextId = await fileService.nextId();
@@ -112,11 +101,14 @@ const Contacts = function( {navigation: { navigate }} ) {
 			/>
 			<View style={{flex:1}}>
 				<ContactList 
-					onLongPress={(id) => onContactLongPress(id)}
-					selectedContacts={selectedContacts}
 					contacts={filteredContacts}
-					onSelect={(user) => navigate('Details', { user: user })}
+					onSelect={(user) => navigate('Details', { user: user, 
+						contacts: contacts, 
+						filteredContacts: filteredContacts, 
+						setContacts: setContacts, 
+						setFilteredContacts: setFilteredContacts})}
 				/>
+
 			</View>
 			<AddModal
 				isOpen={isAddModalOpen}
