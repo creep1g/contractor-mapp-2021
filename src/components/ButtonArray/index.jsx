@@ -35,7 +35,7 @@ const Buttons = function({ makeCall, sendText, editContact, deleteContact }) {
 					style={ styles.button }
 					activeOpacity={ 0.6 }
 					underlayColor={ "darkgray" }
-					onPress={() => console.log('Editing!')} >
+					onPress={() => editContact()} >
 					<AntDesign
 						name="edit"
 						style={[ styles.icon, { backgroundColor: 'lightgray' } ]} />
