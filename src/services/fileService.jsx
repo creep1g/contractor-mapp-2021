@@ -41,9 +41,18 @@ export const addContact = async newContact => {
     var uid = uuid.v1();
     console.log(`${contactDirectory}/${newContact.name}-${uid}.json`);
     await setupDirectory(contactDirectory);
+    newContact.location = `${contactDirectory}/${newContact.name}-${uid}.json`;
     await onException(() => FileSystem.writeAsStringAsync(`${contactDirectory}/${newContact.name}-${uid}.json`, JSON.stringify(newContact)));
     return `${contactDirectory}/${newContact.name}-${uid}.json`;
 }
+
+export const updateContact = async contact => {
+    await onException(() => FileSystem.writeAsStringAsync(contact.location, JSON.stringify(contact)));
+}
+
+export const removeContact = async location => {
+    return await onException(() => FileSystem.deleteAsync(location, {idempotent: true}));
+};
 
 export const remove = async name => {
     return await onException(() => FileSystem.deleteAsync(`${imageDirectory}/${name}`, {idempotent: true}));
