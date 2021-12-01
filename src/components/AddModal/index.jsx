@@ -30,7 +30,6 @@ AddModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   addContact: PropTypes.func.isRequired,
-
 };
 
 export default AddModal;
