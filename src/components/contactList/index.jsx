@@ -15,7 +15,7 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 	}
 
 	const sortedContacts = contacts.sort((first, second) => {
-		return first.name > second.name ? 1 : -1;
+		return first.name.toUpperCase() > second.name.toUpperCase() ? 1 : -1;
 			});
 
 	const hasImage = (image) => {

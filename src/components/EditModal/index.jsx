@@ -7,6 +7,8 @@ import EditInputHandler from '../EditInputHandler';
 const EditModal = function ({
   isOpen, closeModal, user, 
 }) {
+	console.log("This is user");
+	console.log(user);
   return (
     <Modal
       style={styles.modal}
