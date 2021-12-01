@@ -34,8 +34,6 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 					style={ { opacity: isSelected(item.id) ? 0.5 : 1 } }>
 					<View style={[ style.contact, { backgroundColor: isSelected(item.id) ? 'lightblue' : 'lightgrey' } ]} >
 
-						<Text>{ item.name[0] }</Text>
-
 						{
 							hasImage(item.image)
 								?
@@ -44,7 +42,7 @@ const ContactList = ( { contacts, onLongPress, onSelect, selectedContacts } ) =>
 								source={{ uri: item.image }}
 								resizeMode={ 'cover' } />
 								:
-								<></>
+								<Text style={{ fontSize: 30, margin: 20, textAlign: 'center' }}>{ item.name[0] }</Text>
 						}
 
 							<Text style={ style.name }> { item.name } </Text>
