@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  View, TouchableHighlight, Text, TextInput,
+  View, TouchableHighlight,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import styles from './styles';
 import Search from '../search';
 
 const Toolbar = function ({
-  hasSelected, name, onAdd, onRemove, test, filteredDataSource, setFilteredDataSource, masterDataSource
+  onAdd, test, filteredDataSource, setFilteredDataSource, masterDataSource
 }) {
   return (
     <View
@@ -25,13 +25,6 @@ const Toolbar = function ({
 	    onPress={() => onAdd()} >
 		<AntDesign name="adduser" style={styles.toolbarActionText}/>
 	  </TouchableHighlight>
-
-    <TouchableHighlight
-		style={styles.toolbarAction}
-	    onPress={test} >
-		<AntDesign name="adduser" style={styles.toolbarActionText}/>
-	  </TouchableHighlight>
-
     </View>
   );
 };
