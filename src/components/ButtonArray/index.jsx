@@ -47,7 +47,7 @@ const Buttons = function({ makeCall, sendText, editContact, deleteContact }) {
 					style={ styles.button }
 					activeOpacity={ 0.6 }
 					underlayColor={ "darkred" }
-					onPress={() => console.log('DELETEING')} >
+					onPress={deleteContact} >
 					<AntDesign
 						name="delete"
 						style={[ styles.icon, { backgroundColor: 'red' } ]} />
