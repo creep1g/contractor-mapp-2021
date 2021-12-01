@@ -11,60 +11,30 @@ import * as fileService from '../../services/fileService';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
-	const [ contacts, setContacts ] = useState(data.contacts);
+	const loadAllContacts = async () => {
+		const contactObjects = await fileService.getAllContacts();
+		const contactList = contactObjects.map(contact => {
+			return JSON.parse(contact.file);
+		});
+		return contactList;
+	}
 
-	const [filteredContacts, setFilteredContacts] = useState(data.contacts);
+	const [ contacts, setContacts ] = useState([]);
+
+	const [filteredContacts, setFilteredContacts] = useState([]);
 
 	const [ selectedContacts, setSelectedContacts ] = useState([]);
 
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 	
-	useEffect(() => {
-		(async () => {
-		  const { status } = await Contact.requestPermissionsAsync();
-		  if (status === 'granted') {
-			const { data } = await Contact.getContactsAsync({
-			  fields: [
-				Contact.Fields.Name,
-				Contact.Fields.Image,
-				Contact.Fields.PhoneNumbers
-			  ]
-			});
-			if (data.length > 0) {
-				let currentHighId = contacts.reduce(function(prev, current){ 
-							if (current.id > prev.id){
-								return current.id;
-							}
-							else {
-								return prev;
-							}
-						});
+    useEffect(() => {
+        (async () => {
+            const contacts = await loadAllContacts();
+            setContacts(contacts);
+			setFilteredContacts(contacts);
+        })();
+    }, []);
 
-				let all = [];
-				for (var i = 0; i < data.length; i++) {
-					let newId = currentHighId + 1 + all.length;
-					const contact = {
-						// Needs to be fixed so id's don't get mixed up! 
-						"id": newId,
-						"name": data[i].name,
-						"image": '',
-						"number": data[i].phoneNumbers[0].number,
-						"location": ''
-					}
-					
-					if (data[i].imageAvailable) {
-						contact.image = data[i].image.uri
-					}
-					all.push(contact);
-				}
-				setContacts([...contacts, ...all])
-				setFilteredContacts([...filteredContacts, ...all])
-			}
-		  }
-		})();
-	  }, []);
-
-	
 	const onContactLongPress = (id) => {
     if (selectedContacts.indexOf(id) !== -1) {
       setSelectedContacts(selectedContacts.filter((contact) => contact !== id));
@@ -91,9 +61,54 @@ const Contacts = function( {navigation: { navigate }} ) {
 	// console.log(JSON.parse(bla));
   };
 
+  const importContacts = async () => {
+	  const {status} = await Contact.requestPermissionsAsync();
+	  if (status === 'granted') {
+		  const {data} = await Contact.getContactsAsync({
+			  fields: [
+				  Contact.Fields.Name,
+				  Contact.Fields.Image,
+				  Contact.Fields.PhoneNumbers,
+			  ]
+		  });
+		  if (data.length > 0) {
+			  let currentHighId = 1;
+			  if (contacts.length > 0) {
+				currentHighId = contacts.reduce(function(prev, current){ 
+					if (current.id > prev.id){
+						return current.id;
+					}
+					else {
+						return prev;
+					}
+				});
+			  }
+			let all = [];
+			for (var i = 0; i < data.length; i++) {
+				let newId = currentHighId + 1 + all.length;
+				const contact = {
+					// Needs to be fixed so id's don't get mixed up! 
+					"id": newId,
+					"name": data[i].name,
+					"image": '',
+					"number": data[i].phoneNumbers[0].number,
+					"location": ''
+				}
+				if (data[i].imageAvailable) {
+					contact.image = data[i].image.uri
+				}
+				await fileService.addContact(contact);
+				all.push(contact);
+			}
+			setContacts([...contacts, ...all])
+			setFilteredContacts([...filteredContacts, ...all])
+		  }
+	  }
+  }
+
   const test = () => {
-	const ppl = fileService.getAllContacts();
-		console.log(ppl);
+	    //loadAllContacts();
+		importContacts();
   };
 
 	return(
@@ -101,7 +116,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 			<Toolbar 
 				name="contactList"
 				onAdd={() => setIsAddModalOpen(true)}
-				onModify={() => test()}
+				test={() => test()}
 				filteredDataSource={filteredContacts}
 				setFilteredDataSource={setFilteredContacts}
 				masterDataSource={contacts}
