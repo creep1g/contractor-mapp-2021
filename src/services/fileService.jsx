@@ -76,7 +76,7 @@ export const cleanDirectory = async () => {
     await onException(() => FileSystem.deleteAsync(contactDirectory));
     await onException(() => FileSystem.deleteAsync(systemDirectory));
 }
-// cleanDirectory();
+cleanDirectory();
 
 export const copyFile = async (file, newLocation) => {
     return await onException(() => FileSystem.copyAsync({

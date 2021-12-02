@@ -159,7 +159,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 				?
 				<></>
 				:
-				<View style={{ flex: 1, alignItems: 'center' }}>
+				<View style={{ height: 60, alignItems: 'center' }}>
 				<TouchableHighlight 
 					style={[ styles.button, styles.shadow ]} 
 					onPress={(() => importFromOs())}>
