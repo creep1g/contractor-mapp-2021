@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableHighlight, Text } from 'react-native';
 import ContactList from '../../components/contactList';
 import Toolbar from '../../components/toolbar';
 import * as Contact from 'expo-contacts';
@@ -7,6 +7,7 @@ import AddModal from '../../components/AddModal';
 import ImportModal from '../../components/ImportModal';
 import * as fileService from '../../services/fileService';
 import * as encoding from 'text-encoding';
+import styles from './styles';
 
 const Contacts = function( {navigation: { navigate }} ) {
 
@@ -17,7 +18,10 @@ const Contacts = function( {navigation: { navigate }} ) {
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 
 	const [ isImportModalOpen, setIsImportModalOpen] = useState(false);
-	
+
+	const [ wantsPrompt, setWantsPrompt ] = useState(true);
+
+	const [ hasImported, setHasImported ] = useState(false);
 	const loadAllContacts = async () => {
 		const contactObjects = await fileService.getAllContacts();
 		const contactList = contactObjects.map(contact => {
@@ -30,9 +34,12 @@ const Contacts = function( {navigation: { navigate }} ) {
         (async () => {
 			//test();
             const contacts = await loadAllContacts();
+			const prompt = await fileService.promptForImport();
+			setWantsPrompt(prompt);
             setContacts(contacts);
 			setFilteredContacts(contacts);
 			const imported = await fileService.hasImported();
+			setHasImported(imported);
 			if (!imported) {
 				setIsImportModalOpen(true);
 			}
@@ -55,17 +62,17 @@ const Contacts = function( {navigation: { navigate }} ) {
   };
 
   const importContacts = async () => {
-	  const encode = new encoding.TextEncoder()
-		const {status} = await Contact.requestPermissionsAsync();
-	  if (status === 'granted') {
-		  const {data} = await Contact.getContactsAsync({
+	 const encode = new encoding.TextEncoder()
+	 const {status} = await Contact.requestPermissionsAsync();
+
+	 if (status === 'granted') {
+	  const {data} = await Contact.getContactsAsync({
 			  fields: [
 				  Contact.Fields.Name,
 				  Contact.Fields.Image,
 				  Contact.Fields.PhoneNumbers,
 			  ]
 		  } );
-			console.log(data);
 		  if (data.length > 0) {
 			let all = [];
 			for (var i = 0; i < data.length; i++) {
@@ -79,7 +86,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 					"location": ''
 				}
 				if (data[i].name){
-					console.log(data[i].name);
 				}
 				if (data[i].imageAvailable) {
 					contact.image = data[i].image.uri
@@ -87,6 +93,7 @@ const Contacts = function( {navigation: { navigate }} ) {
 				await fileService.addContact(contact);
 				all.push(contact);
 			}
+			setHasImported(true);
 			setContacts([...contacts, ...all])
 			setFilteredContacts([...filteredContacts, ...all])
 			await fileService.importing();
@@ -94,6 +101,17 @@ const Contacts = function( {navigation: { navigate }} ) {
 		  }
 	  }
   }
+
+  const doNotAskAgain = async ()  => {
+	await fileService.setPrompt();
+	setWantsPrompt(false);
+	setIsImportModalOpen(false);
+	};
+
+	const importFromOs = () => {
+		setWantsPrompt(true);
+		setIsImportModalOpen(true);
+	};
 
   const test = async () => {
 	    //loadAllContacts();
@@ -105,7 +123,7 @@ const Contacts = function( {navigation: { navigate }} ) {
             setContacts(contacts);
 			setFilteredContacts(contacts);
   };
-
+	
 	return(
 		<View style={{flex:1}}>
 			<Toolbar 
@@ -115,8 +133,12 @@ const Contacts = function( {navigation: { navigate }} ) {
 				filteredDataSource={filteredContacts}
 				setFilteredDataSource={setFilteredContacts}
 				masterDataSource={contacts}
+				empty={ contacts.length > 0 ? true : false }
 			/>
 			<View style={{flex:1}}>
+				{
+				contacts.length > 0
+				?
 				<ContactList 
 					contacts={filteredContacts}
 					onSelect={(user) => navigate('Details', { user: user, 
@@ -125,6 +147,27 @@ const Contacts = function( {navigation: { navigate }} ) {
 						setContacts: setContacts, 
 						setFilteredContacts: setFilteredContacts})}
 				/>
+				:
+				<View style={ { flex:1, marginTop: 20, marginLeft: 10, marginRight: 10 } }>
+					<Text style={ { fontSize:18, textAlign: 'center' } }> To add new contacts tap the add button above. </Text>
+					<Text style={ { fontSize:18, textAlign: 'center' } }> To import contacts from your phone tap the button below</Text>
+				</View>
+				}	
+
+				{
+				hasImported
+				?
+				<></>
+				:
+				<View style={{ height: 60, alignItems: 'center' }}>
+				<TouchableHighlight 
+					style={[ styles.button, styles.shadow ]} 
+					onPress={(() => importFromOs())}>
+					<Text style={ styles.text }>Import from phone</Text>
+				</TouchableHighlight>
+				</View>
+				}
+
 			</View>
 			<AddModal
 				isOpen={isAddModalOpen}
@@ -132,11 +175,21 @@ const Contacts = function( {navigation: { navigate }} ) {
 				addContact={(input) => addContact(input)}
 				selectFromCameraRoll={() => selectFromCameraRoll()}
 			/>
+			{
+
+			wantsPrompt
+
+			?
+			
 			<ImportModal
 				isOpen={isImportModalOpen}
 				closeModal={() => setIsImportModalOpen(false)}
 				importing={() => importContacts()}
+				notAgain={() => doNotAskAgain()}
 			/>
+			:
+			<></>
+			}
 		</View>
 	)
 

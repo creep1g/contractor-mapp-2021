@@ -7,7 +7,7 @@ import styles from './styles';
 import Search from '../search';
 
 const Toolbar = function ({
-  onAdd, test, filteredDataSource, setFilteredDataSource, masterDataSource
+  onAdd, empty, filteredDataSource, setFilteredDataSource, masterDataSource
 }) {
   return (
     <View
@@ -21,9 +21,9 @@ const Toolbar = function ({
 		setFilteredDataSource={ setFilteredDataSource }/>
 	  
 	  <TouchableHighlight
-		style={styles.toolbarAction}
+		  style={styles.toolbarAction}
 	    onPress={() => onAdd()} >
-		<AntDesign name="adduser" style={styles.toolbarActionText}/>
+		  <AntDesign name="adduser" style={[styles.toolbarActionText, { color: empty ? 'white' : 'lime' }] }/>
 	  </TouchableHighlight>
     </View>
   );

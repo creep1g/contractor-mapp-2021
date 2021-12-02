@@ -14,7 +14,9 @@ export default StyleSheet.create ({
   toolbarActionText: {
     fontWeight: 'bold',
     color: 'white',
+	backgroundColor: '#393E42',
 	padding: 5,
-    fontSize: 16,
+    fontSize: 30,
+	elevation: 3
   },
 });
