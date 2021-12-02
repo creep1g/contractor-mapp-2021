@@ -23,6 +23,7 @@ const setupSettings = async () => {
         const settings = {
             "nextId": 1,
             "hasImported": false,
+			"promptForImport": true
         };    
         await onException(() => FileSystem.writeAsStringAsync(`${systemDirectory}/settings.json`, JSON.stringify(settings)));
     }
@@ -46,6 +47,17 @@ export const nextId = async () => {
     return settings.nextId - 1;
 }
 
+export const setPrompt = async () => {
+	const settings = JSON.parse( await getSettings() );
+	settings.promptForImport = false;
+	await updateSettings(settings);
+}
+
+export const promptForImport = async () => {
+	const settings = JSON.parse(await getSettings());
+	return settings.promptForImport;
+}
+
 export const hasImported = async () => {
     const settings = JSON.parse(await getSettings());
     return settings.hasImported;
@@ -64,7 +76,7 @@ export const cleanDirectory = async () => {
     await onException(() => FileSystem.deleteAsync(contactDirectory));
     await onException(() => FileSystem.deleteAsync(systemDirectory));
 }
-cleanDirectory();
+// cleanDirectory();
 
 export const copyFile = async (file, newLocation) => {
     return await onException(() => FileSystem.copyAsync({

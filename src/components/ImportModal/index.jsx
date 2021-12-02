@@ -39,7 +39,6 @@ const ImportModal = function ({
 		<View style={ styles.buttonContainer }>
 		  <TouchableOpacity
             onPress={notAgain}
-			onPress={closeModal}
 		    style={[styles.shadow, styles.button, { height: 50 }]}
           >
             <Text style={styles.text}>Don not ask again</Text>

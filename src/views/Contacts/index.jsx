@@ -17,7 +17,9 @@ const Contacts = function( {navigation: { navigate }} ) {
 	const [ isAddModalOpen, setIsAddModalOpen] = useState(false);
 
 	const [ isImportModalOpen, setIsImportModalOpen] = useState(false);
-	
+
+	const [ wantsPrompt, setWantsPrompt ] = useState(true)
+
 	const loadAllContacts = async () => {
 		const contactObjects = await fileService.getAllContacts();
 		const contactList = contactObjects.map(contact => {
@@ -30,6 +32,8 @@ const Contacts = function( {navigation: { navigate }} ) {
         (async () => {
 			//test();
             const contacts = await loadAllContacts();
+			const prompt = await fileService.promptForImport();
+			setWantsPrompt(prompt);
             setContacts(contacts);
 			setFilteredContacts(contacts);
 			const imported = await fileService.hasImported();
@@ -55,17 +59,17 @@ const Contacts = function( {navigation: { navigate }} ) {
   };
 
   const importContacts = async () => {
-	  const encode = new encoding.TextEncoder()
-		const {status} = await Contact.requestPermissionsAsync();
-	  if (status === 'granted') {
-		  const {data} = await Contact.getContactsAsync({
+	 const encode = new encoding.TextEncoder()
+	 const {status} = await Contact.requestPermissionsAsync();
+
+	 if (status === 'granted') {
+	  const {data} = await Contact.getContactsAsync({
 			  fields: [
 				  Contact.Fields.Name,
 				  Contact.Fields.Image,
 				  Contact.Fields.PhoneNumbers,
 			  ]
 		  } );
-			console.log(data);
 		  if (data.length > 0) {
 			let all = [];
 			for (var i = 0; i < data.length; i++) {
@@ -79,7 +83,6 @@ const Contacts = function( {navigation: { navigate }} ) {
 					"location": ''
 				}
 				if (data[i].name){
-					console.log(data[i].name);
 				}
 				if (data[i].imageAvailable) {
 					contact.image = data[i].image.uri
@@ -94,6 +97,12 @@ const Contacts = function( {navigation: { navigate }} ) {
 		  }
 	  }
   }
+
+  const doNotAskAgain = async ()  => {
+	await fileService.setPrompt();
+	setWantsPrompt(false);
+	setIsImportModalOpen(false);
+	};
 
   const test = async () => {
 	    //loadAllContacts();
@@ -132,11 +141,20 @@ const Contacts = function( {navigation: { navigate }} ) {
 				addContact={(input) => addContact(input)}
 				selectFromCameraRoll={() => selectFromCameraRoll()}
 			/>
+			{
+
+			wantsPrompt
+			?
+			
 			<ImportModal
 				isOpen={isImportModalOpen}
 				closeModal={() => setIsImportModalOpen(false)}
 				importing={() => importContacts()}
+				notAgain={() => doNotAskAgain()}
 			/>
+			:
+			<></>
+			}
 		</View>
 	)
 
