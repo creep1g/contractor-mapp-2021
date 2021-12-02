@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 const ImportModal = function ({
-  isOpen, closeModal, importing,
+  isOpen, closeModal, importing, notAgain
 }) {
   return (
     <Modal
@@ -31,7 +31,17 @@ const ImportModal = function ({
             onPress={closeModal}
             style={[styles.shadow, styles.button]}
           >
-            <Text style={styles.text}>No</Text>
+            <Text style={styles.text}>Not Now</Text>
+          </TouchableOpacity>
+
+		</View>
+
+		<View style={ styles.buttonContainer }>
+		  <TouchableOpacity
+            onPress={notAgain}
+			  style={[styles.shadow, styles.button, { height: 50 }]}
+          >
+            <Text style={styles.text}>Don not ask again</Text>
           </TouchableOpacity>
 		</View>
     </Modal>

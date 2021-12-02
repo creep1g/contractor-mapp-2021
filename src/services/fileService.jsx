@@ -66,7 +66,6 @@ export const cleanDirectory = async () => {
 }
 cleanDirectory();
 
-cleanDirectory();
 export const copyFile = async (file, newLocation) => {
     return await onException(() => FileSystem.copyAsync({
         from: file,
