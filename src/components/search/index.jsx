@@ -2,33 +2,34 @@ import React, { useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import styles from './styles';
+import PropTypes from 'prop-types';
 
 
-const Search = ( { masterDataSource, filteredDataSource, setFilteredDataSource } ) => {
+const Search = ( { masterDataSource, setFilteredDataSource } ) => {
 
-  const [ search, setSearch ] = useState('');
+	const [ search, setSearch ] = useState('');
 	
 	const searchFilterFunction = ( text ) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.name
-          ? item.name.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-		setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-		setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
+		// Check if searched text is not blank
+		if (text) {
+			// Inserted text is not blank
+			// Filter the masterDataSource
+			// Update FilteredDataSource
+			const newData = masterDataSource.filter(function (item) {
+				const itemData = item.name
+					? item.name.toUpperCase()
+					: ''.toUpperCase();
+				const textData = text.toUpperCase();
+				return itemData.indexOf(textData) > -1;
+			});
+			setFilteredDataSource(newData);
+			setSearch(text);
+		} else {
+			// Inserted text is blank
+			// Update FilteredDataSource with masterDataSource
+			setFilteredDataSource(masterDataSource);
+			setSearch(text);
+		}
 	};
 
 
@@ -41,14 +42,19 @@ const Search = ( { masterDataSource, filteredDataSource, setFilteredDataSource }
 					inputContainerStyle={styles.inputContainerStyle}
 					searchIcon={{ size: 24 }}
 					onChangeText={(text) => searchFilterFunction(text)}
-					onClear={(text) => searchFilterFunction('')}
+					onClear={() => searchFilterFunction('')}
 					placeHolder="Search..."
 					value={search}
 				/>
 			</View>
 		</SafeAreaView>
-	)
-} 
+	);
+};
+
+Search.propTypes = {
+	masterDataSource: PropTypes.array.isRequired,
+	setFilteredDataSource: PropTypes.func.isRequired,
+};
 
 export default Search;
 

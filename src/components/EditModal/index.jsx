@@ -5,28 +5,34 @@ import styles from './styles';
 import EditInputHandler from '../EditInputHandler';
 
 const EditModal = function ({
-  isOpen, closeModal, user, updateContact
+	isOpen, closeModal, user, updateContact
 }) {
-  return (
-    <Modal
-      style={styles.modal}
-      isOpen={isOpen}
-      closeModal={closeModal}
-    >
+	return (
+		<Modal
+			style={styles.modal}
+			isOpen={isOpen}
+			closeModal={closeModal}
+		>
 
-      <EditInputHandler
-        style={styles.modal}
-        closeModal={closeModal}
+			<EditInputHandler
+				style={styles.modal}
+				closeModal={closeModal}
 				user={user}
 				updateContact={updateContact}
-      />
-    </Modal>
-  );
+			/>
+		</Modal>
+	);
 };
 
 EditModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+	isOpen: PropTypes.bool.isRequired,
+	closeModal: PropTypes.func.isRequired,
+	user: PropTypes.string,
+	updateContact: PropTypes.func.isRequired,
+};
+
+EditModal.defaultProps = {
+	user: '',
 };
 
 export default EditModal;

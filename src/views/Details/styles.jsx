@@ -29,7 +29,7 @@ export default StyleSheet.create({
 		margin: 10,
 		marginLeft: 20,
 		marginBottom: 0,
-		color: "darkblue"
+		color: 'darkblue'
 	},
 
 	number: {
@@ -53,4 +53,4 @@ export default StyleSheet.create({
 		padding: 10,
 		// elevation: 1,
 	}
-}) 
+}); 

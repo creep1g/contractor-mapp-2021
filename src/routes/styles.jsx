@@ -10,4 +10,4 @@ export default StyleSheet.create ({
 		},
 		elevation: 0
 	}
-})
+});

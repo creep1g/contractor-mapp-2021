@@ -5,31 +5,29 @@ import styles from './styles';
 import ContactInputHandler from '../ContactInputHandler';
 
 const AddModal = function ({
-  isOpen, closeModal, addContact, takePhoto, selectPhoto,
+	isOpen, closeModal, addContact,
 }) {
-  return (
-    <Modal
-      style={styles.modal}
-      isOpen={isOpen}
-      closeModal={closeModal}
-    >
+	return (
+		<Modal
+			style={styles.modal}
+			isOpen={isOpen}
+			closeModal={closeModal}
+		>
 
-      <ContactInputHandler
-        style={styles.modal}
-        closeModal={closeModal}
-        addContact={addContact}
-        takePhoto={takePhoto}
-        selectPhoto={selectPhoto}
-      />
+			<ContactInputHandler
+				style={styles.modal}
+				closeModal={closeModal}
+				addContact={addContact}
+			/>
 	
-    </Modal>
-  );
+		</Modal>
+	);
 };
 
 AddModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  addContact: PropTypes.func.isRequired,
+	isOpen: PropTypes.bool.isRequired,
+	closeModal: PropTypes.func.isRequired,
+	addContact: PropTypes.func.isRequired,
 };
 
 export default AddModal;
