@@ -16,6 +16,7 @@ expo start
 ```
 ## Known Bugs
 - Image preview is not available when importing or taking a picture, but appear as soon as the modal is closed.
+- If you edit a contact and try to remove them while still in the detals view the application just sends you back to the contact list without removing the contact, the contact can be removed by going back into its details view.
 
 ## Demo
 ![gifcast_211203170234](https://user-images.githubusercontent.com/45407193/144642910-38282bc6-90a5-4fbb-906c-037a5912015d.gif) <br/>
