@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import style from './styles';
+import PropTypes from 'prop-types';
 
 const ContactList = ( { contacts, onSelect } ) => {
 
 
 	const sortedContacts = contacts.sort((first, second) => {
 		return first.name.toUpperCase() > second.name.toUpperCase() ? 1 : -1;
-			});
+	});
 
 	const hasImage = (image) => {
 		if (image.length > 0) {
@@ -28,25 +29,30 @@ const ContactList = ( { contacts, onSelect } ) => {
 						{
 							hasImage(item.image)
 								?
-							<Image 
-								style={ style.image }
-								source={{ uri: item.image }}
-								resizeMode={ 'cover' } />
+								<Image 
+									style={ style.image }
+									source={{ uri: item.image }}
+									resizeMode={ 'cover' } />
 								:
 								<Text style={{ fontSize: 30, margin: 20, textAlign: 'center' }}>{ item.name[0] }</Text>
 						}
 
-							<Text style={ style.name }> { item.name } </Text>
-						</View>
+						<Text style={ style.name }> { item.name } </Text>
+					</View>
 
-					</TouchableOpacity>
+				</TouchableOpacity>
 			
 		
 			)
-		}
+			}
 
 			keyExtractor={(item) => item.id }
 		/>
-	)
+	);
+};
+
+ContactList.propTypes = {
+	contacts: PropTypes.array.isRequired,
+	onSelect: PropTypes.func.isRequired,
 };
 export default ContactList;
